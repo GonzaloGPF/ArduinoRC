@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)){
-                final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-                switch (estado){
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                switch (state){
                     case BluetoothAdapter.STATE_OFF:
                         Log.v(TAG, "onReceive: Shutting Down");
                         break;
