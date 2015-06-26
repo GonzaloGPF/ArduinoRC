@@ -7,7 +7,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
-    <string name="bt_fragment">BluetoothFragment</string>
+    <string name="bluetooth_fragment">BluetoothFragment</string>
     <string name="controller_fragment">ControllerFragment</string>
     <string name="connect">Connect</string>
     <string name="cancel">Cancel</string>

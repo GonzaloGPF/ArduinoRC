@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,22 +21,16 @@ import java.util.ArrayList;
 
 public class BluetoothFragment extends Fragment implements View.OnClickListener {
 
-    private static final String ADAPTER_STATE = "bluetooth_adapter_state";
-    private static final String DEVICES_STATE = "devices_adapter_state";
-
-    private Boolean adapterState;
-
     private ImageButton btn_bluetooth, btn_search, btn_bonded;
-    private TextView txt_bluetooth;
-    private ArrayList<BluetoothDevice> devices = new ArrayList<>();
+    private TextView txt_bluetooth, txt_search, txt_bonded;
     private BluetoothDeviceAdapter adapter;
 
     private OnBluetoothInteractionListener mListener;
 
-    public static BluetoothFragment newInstance(Boolean param1) {
+    public static BluetoothFragment newInstance() {
         BluetoothFragment fragment = new BluetoothFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ADAPTER_STATE, param1);
+        //args.putBoolean(ADAPTER_STATE, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,14 +43,8 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            adapterState = getArguments().getBoolean(ADAPTER_STATE);
+            //adapterState = getArguments().getBoolean(ADAPTER_STATE);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState); //If the user rotates screen, dont lose your devices!
-        outState.putParcelableArrayList(DEVICES_STATE, devices);
     }
 
     @Override
@@ -65,6 +54,9 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener 
         btn_search = (ImageButton) view.findViewById(R.id.btn_search);
         btn_bonded = (ImageButton) view.findViewById(R.id.btn_bonded);
         txt_bluetooth = (TextView) view.findViewById(R.id.txt_bluetooth);
+        txt_search = (TextView) view.findViewById(R.id.txt_search);
+        txt_bonded = (TextView) view.findViewById(R.id.txt_bonded);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.devices_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BluetoothDeviceAdapter(getActivity(),(MainActivity) getActivity());
@@ -74,18 +66,23 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener 
         btn_search.setOnClickListener(this);
         btn_bonded.setOnClickListener(this);
 
-        if(savedInstanceState!=null){
-            devices =  savedInstanceState.getParcelableArrayList(DEVICES_STATE);
-            adapter.setDevices(devices);
-        }
-
-        refreshButtons(adapterState);
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        refreshButtons(((MainActivity) getActivity()).getBluetoothState());
+    }
 
     @Override
     public void onAttach(Activity activity) {
+        Log.d("Debug", "Atached");
         super.onAttach(activity);
         try {
             mListener = (OnBluetoothInteractionListener) activity;
@@ -96,6 +93,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onDetach() {
+        Log.d("Debug", "Detached");
         super.onDetach();
         mListener = null;
     }
@@ -112,19 +110,24 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener 
     }
 
     public void refreshButtons(Boolean state){
-        if(state){
-            btn_bluetooth.setImageResource(R.drawable.ic_btn_bluetooth_disable);
-            txt_bluetooth.setText("Disable");
-        }else{
-            btn_bluetooth.setImageResource(R.drawable.ic_btn_bluetooth);
-            txt_bluetooth.setText("Enable");
+        if(isVisible()){
+            if(state){
+                btn_bluetooth.setImageResource(R.drawable.ic_btn_bluetooth_disable);
+                txt_bluetooth.setText("Disable");
+            }else{
+                btn_bluetooth.setImageResource(R.drawable.ic_btn_bluetooth);
+                txt_bluetooth.setText("Enable");
+            }
+            btn_search.setEnabled(state);
+            txt_search.setEnabled(state);
+            btn_bonded.setEnabled(state);
+            txt_bonded.setEnabled(state);
         }
-        btn_search.setEnabled(state);
-        btn_bonded.setEnabled(state);
     }
 
-    public void setArrayDevices(ArrayList<BluetoothDevice> devices){
-        this.devices = devices;
-        adapter.setDevices(this.devices);
+    public void setDevices(ArrayList<BluetoothDevice> devices){
+        if(adapter!=null){
+            adapter.setDevices(devices);
+        }
     }
 }

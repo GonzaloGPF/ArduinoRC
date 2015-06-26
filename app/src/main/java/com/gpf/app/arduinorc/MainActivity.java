@@ -35,10 +35,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     private static final String TAG = "com.gpf.app.arduinorc";
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_DISCOVERABLE = 2;
+    private static final String DEVICES = "bluetooth_devices";
     private Toolbar toolbar;
     private NavigationFragment navigationFragment;
     private BluetoothSocket clientSocket;
-    private ArrayList<BluetoothDevice> arrayDevices = new ArrayList<>();
+    private ArrayList<BluetoothDevice> devices = new ArrayList<>();
     private BluetoothAdapter bAdapter;
     private BluetoothFragment bluetoothFragment;
     private final BroadcastReceiver bReceiver = new BroadcastReceiver(){
@@ -66,11 +67,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
                 Toast.makeText(getBaseContext(), "Device Detected" + ": " + deviceDesc, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "ACTION_FOUND: Device detected " + deviceDesc);
                 addDevice(device);
-                bluetoothFragment.setArrayDevices(arrayDevices);
             }
             if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)){
                 Toast.makeText(getBaseContext(), "Discovery Finished", Toast.LENGTH_SHORT).show();
-                bluetoothFragment.setArrayDevices(arrayDevices);
             }
         }
     };
@@ -88,19 +87,30 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
 
         navigationFragment = (NavigationFragment) getFragmentManager().findFragmentById(R.id.navigationDrawer);
         navigationFragment.setUp(drawerLayout, toolbar);
+        bluetoothFragment = BluetoothFragment.newInstance();
 
         bAdapter = BluetoothAdapter.getDefaultAdapter();
         if(bAdapter==null){
-            Log.d(TAG,"This device has not Bluetooth");
+            Log.d(TAG, "This device has not Bluetooth");
         }
-
-        if(savedInstanceState==null) {
-            bluetoothFragment = BluetoothFragment.newInstance(getBluetoothState());
-            getFragmentManager().beginTransaction().add(R.id.fragmentContainer, bluetoothFragment, getString(R.string.bt_fragment)).commit();
-            toolbar.setTitle(getString(R.string.bt_fragment));
+        if(savedInstanceState!=null){
+            devices = savedInstanceState.getParcelableArrayList(DEVICES);
+        }else{
+            getFragmentManager().beginTransaction().add(R.id.fragmentContainer, bluetoothFragment, getString(R.string.bluetooth_fragment)).commit();
+            toolbar.setTitle(getString(R.string.bluetooth_fragment));
         }
-        registrarEventosBluetooth();
+        if(bluetoothFragment==null){
+            Log.d("Debugg", "Fragment is null!");
+        }
+        registerBluetoothEvents();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(DEVICES, devices);
+    }
+
 
     @Override
     protected void onPostResume() {
@@ -138,14 +148,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
             case R.id.btn_bluetooth:
                 if(bAdapter.isEnabled()) {
                     bAdapter.disable();
-                    bluetoothFragment.refreshButtons(getBluetoothState());
                 } else {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                 }
+                refreshBluetoothFragment();
                 break;
             case R.id.btn_search:
-                arrayDevices.clear();
+                devices.clear();
                 if (bAdapter.isDiscovering()) {
                     bAdapter.cancelDiscovery();
                 }
@@ -156,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
                 }
                 break;
             case R.id.btn_bonded:
-                arrayDevices = new ArrayList<>(bAdapter.getBondedDevices());
-                bluetoothFragment.setArrayDevices(arrayDevices);
+                devices = new ArrayList<>(bAdapter.getBondedDevices());
+                refreshBluetoothFragment();
                 break;
         }
     }
@@ -168,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         this.unregisterReceiver(bReceiver);
     }
 
-    private void registrarEventosBluetooth() {
+    private void registerBluetoothEvents() {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -179,9 +189,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_ENABLE_BT) {
+            refreshBluetoothFragment();
             if (resultCode == RESULT_OK) {
                 Log.d(TAG, "Bluetooth: the user accepts");
-                bluetoothFragment.refreshButtons(getBluetoothState());
             } else {
                 Log.d(TAG, "Bluetooth: the user does not accept");
             }
@@ -196,12 +206,19 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     }
 
     private void addDevice(BluetoothDevice device){
-        arrayDevices.add(device);
+        devices.add(device);
+        refreshBluetoothFragment();
+    }
+
+    private void refreshBluetoothFragment(){
+        Log.d("Debugg", "Refreshing Bluetooth Fragment");
+        bluetoothFragment.setDevices(devices);
+        bluetoothFragment.refreshButtons(getBluetoothState());
     }
 
     @Override
     public void deviceClick(View view, int position) {
-        BluetoothDevice device = arrayDevices.get(position);
+        BluetoothDevice device = devices.get(position);
         connectDialog("Connection", "Do you want connect with " + device.getName() + " ?", device.getAddress()).show();
     }
 

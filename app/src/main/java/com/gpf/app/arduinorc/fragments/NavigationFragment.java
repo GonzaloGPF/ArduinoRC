@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.gpf.app.arduinorc.MainActivity;
 import com.gpf.app.arduinorc.R;
 import com.gpf.app.arduinorc.adapters.NavigationAdapter;
 import com.gpf.app.arduinorc.utils.Constants;
@@ -58,8 +57,8 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
         String fragmentName = "";
         switch (position){
             case 0:
-                nextFragment = BluetoothFragment.newInstance(((MainActivity) getActivity()).getBluetoothState());
-                fragmentName = getString(R.string.bt_fragment);
+                nextFragment = BluetoothFragment.newInstance();
+                fragmentName = getString(R.string.bluetooth_fragment);
                 break;
             case 1:
                 nextFragment = ControllerFragment.newInstance(null, null);
