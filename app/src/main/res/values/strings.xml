@@ -11,4 +11,7 @@
     <string name="controller_fragment">ControllerFragment</string>
     <string name="connect">Connect</string>
     <string name="cancel">Cancel</string>
+    <string name="connecting">[Connecting]</string>
+    <string name="connected">[Connected]</string>
+    <string name="not_connected">[Not Connected]</string>
 </resources>
