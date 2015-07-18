@@ -1,8 +1,8 @@
 package com.gpf.app.arduinorc.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,7 +64,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
 
     @Override
     public void itemClick(View view, int position) {
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         Fragment nextFragment = null;
         switch (position){
             case 0:

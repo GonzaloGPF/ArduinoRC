@@ -4,23 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <!--Contenido: Toolbar + Fragment dinámico-->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:fitsSystemWindows="true">
         <include
+            android:elevation="2dp"
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/fragmentContainer"
             android:layout_below="@+id/toolbar">
         </FrameLayout>
-    </RelativeLayout>
+    </LinearLayout>
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"

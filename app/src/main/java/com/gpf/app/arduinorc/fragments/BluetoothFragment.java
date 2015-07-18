@@ -1,21 +1,21 @@
 package com.gpf.app.arduinorc.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.gpf.app.arduinorc.MainActivity;
 import com.gpf.app.arduinorc.R;
 import com.gpf.app.arduinorc.adapters.BluetoothDeviceAdapter;
 
@@ -27,8 +27,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_DISCOVERABLE = 2;
     private static final String DEVICES = "bluetooth_devices";
-    private ImageButton btn_bluetooth, btn_search, btn_bonded;
-    private TextView txt_bluetooth, txt_search, txt_bonded;
+    private Button btn_bluetooth, btn_search, btn_bonded;
     private BluetoothDeviceAdapter adapter;
     private BluetoothAdapter bAdapter;
     private ArrayList<BluetoothDevice> devices = new ArrayList<>();
@@ -54,20 +53,18 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         }
         bAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bAdapter == null) {
-            Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            getActivity().finish();
+            Log.d(TAG, "Bluetooth is not available");
+            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            //getActivity().finish();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bluetooth, container, false);
-        btn_bluetooth = (ImageButton) view.findViewById(R.id.btn_bluetooth);
-        btn_search = (ImageButton) view.findViewById(R.id.btn_search);
-        btn_bonded = (ImageButton) view.findViewById(R.id.btn_bonded);
-        txt_bluetooth = (TextView) view.findViewById(R.id.txt_bluetooth);
-        txt_search = (TextView) view.findViewById(R.id.txt_search);
-        txt_bonded = (TextView) view.findViewById(R.id.txt_bonded);
+        btn_bluetooth = (Button) view.findViewById(R.id.btn_bluetooth);
+        btn_search = (Button) view.findViewById(R.id.btn_search);
+        btn_bonded = (Button) view.findViewById(R.id.btn_bonded);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.devices_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -77,12 +74,16 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         if(devices!=null){
             setDevices();
         }
-
-        btn_bluetooth.setOnClickListener(this);
-        btn_search.setOnClickListener(this);
-        btn_bonded.setOnClickListener(this);
+        setButtonsListeners();
         refreshButtons();
         return view;
+    }
+    private void setButtonsListeners(){
+        if(bAdapter!=null){
+            btn_bluetooth.setOnClickListener(this);
+            btn_search.setOnClickListener(this);
+            btn_bonded.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -138,6 +139,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.btn_search:
                 devices.clear();
+                ((MainActivity) getActivity()).showProgressBar(true);
                 //setProgressBarIndeterminateVisibility(true);
                 //setTitle(R.string.scanning);
                 if (bAdapter.isDiscovering()) {
@@ -181,7 +183,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void deviceClick(View view, int position) {
-        if (mListener != null) {
+        if (bAdapter != null && mListener != null) {
             bAdapter.cancelDiscovery();
             BluetoothDevice device = devices.get(position);
             mListener.onDeviceClick(device);
@@ -193,25 +195,28 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
     }
 
     public void refreshButtons(){
-        Boolean state = bAdapter.isEnabled();
-        if(state){
-            btn_bluetooth.setImageResource(R.drawable.ic_btn_bluetooth_disable);
-            txt_bluetooth.setText("Disable");
+        if(bAdapter!=null) {
+            Boolean state = bAdapter.isEnabled();
+            if (state) {
+                btn_bluetooth.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bluetooth_disable, 0, 0);
+                btn_bluetooth.setText("Disable");
+            } else {
+                btn_bluetooth.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bluetooth, 0, 0);
+                btn_bluetooth.setText("Enable");
+            }
+            btn_search.setEnabled(state);
+            btn_bonded.setEnabled(state);
         }else{
-            btn_bluetooth.setImageResource(R.drawable.ic_btn_bluetooth);
-            txt_bluetooth.setText("Enable");
+            Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
         }
-        btn_search.setEnabled(state);
-        txt_search.setEnabled(state);
-        btn_bonded.setEnabled(state);
-        txt_bonded.setEnabled(state);
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        bAdapter.cancelDiscovery();
+        if(bAdapter!=null) {
+            bAdapter.cancelDiscovery();
+        }
     }
 
     public void addDevice(BluetoothDevice device){

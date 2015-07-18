@@ -4,24 +4,21 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.gpf.app.arduinorc.R;
-import com.gpf.app.arduinorc.adapters.ViewPagerAdapter;
-import com.gpf.app.arduinorc.tabs.SlidingTabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ControllerFragment.OnFragmentInteractionListener} interface
+ * {@link ProgrammerFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ControllerFragment#newInstance} factory method to
+ * Use the {@link ProgrammerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ControllerFragment extends Fragment {
+public class ProgrammerFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,16 +28,13 @@ public class ControllerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private ViewPager mPager;
-    private SlidingTabLayout mTabs;
-
     private OnFragmentInteractionListener mListener;
 
-    public static ControllerFragment newInstance() {
-        return  new ControllerFragment();
+    public static ProgrammerFragment newInstance() {
+        return new ProgrammerFragment();
     }
 
-    public ControllerFragment() {
+    public ProgrammerFragment() {
         // Required empty public constructor
     }
 
@@ -54,19 +48,10 @@ public class ControllerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_controller, container, false);
-        mPager = (ViewPager) view.findViewById(R.id.pager);
-        mPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), getActivity()));
-        mTabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
-        mTabs.setCustomTabView(R.layout.tab_controller, R.id.tab_text);
-        mTabs.setDistributeEvenly(true);
-        mTabs.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-        mTabs.setSelectedIndicatorColors(getResources().getColor(R.color.accentColor));
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-
-        mTabs.setViewPager(mPager);
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_programmer, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

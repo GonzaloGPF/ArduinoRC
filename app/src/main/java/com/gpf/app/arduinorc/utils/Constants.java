@@ -13,7 +13,7 @@ public class Constants {
 
     public static List<NavigationRow> getNavigationRows(){
         List<NavigationRow> data = new ArrayList<>();
-        int icons[] = {R.drawable.ic_nav_bluetooth, R.drawable.ic_nav_remote};
+        int icons[] = {R.drawable.ic_connection, R.drawable.ic_controller};
         String titles[] = {"Bluetooth", "Remote Control"};
         for(int i=0; i<icons.length && i<titles.length; i++){
             NavigationRow row = new NavigationRow(icons[i], titles[i]);

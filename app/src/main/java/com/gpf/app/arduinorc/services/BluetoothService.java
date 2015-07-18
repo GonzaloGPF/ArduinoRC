@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class BluetoothService extends Service {
 
-    public static final String TAG = "BT_Service";
+    public static final String TAG = "BluetoothService";
     public static final String BT_DEVICE = "bt_device";
     public static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
     public static final int STATE_NONE = 0; // we're doing nothing
@@ -104,9 +104,6 @@ public class BluetoothService extends Service {
         mState = state;
         if (mHandler != null) {
             mHandler.obtainMessage(MSG_STATE_CHANGE, state, -1).sendToTarget();
-        }
-        if(BTListener != null){
-            BTListener.onStateChanged(mState);
         }
     }
 
@@ -356,16 +353,19 @@ public class BluetoothService extends Service {
         if (!Thread.currentThread().isInterrupted()) {
             switch (msg.what) {
                 case MSG_STATE_CHANGE:
-                    Log.d("DEBUGG", "State changed: "+msg.arg1);
+                    Log.d(TAG, "State changed: "+msg.arg1);
+                    if(BTListener != null){
+                        BTListener.onStateChanged(mState);
+                    }
                     break;
                 case MSG_READ:
-                    Log.d("DEBUGG", "Read: "+msg.arg1);
+                    Log.d(TAG, "Read: "+msg.arg1);
                     break;
                 case MSG_WRITE:
-                    Log.d("DEBUGG", "Write");
+                    Log.d(TAG, "Write");
                     break;
                 case MSG_TOAST:
-                    Log.d("DEBUGG", "Toast");
+                    Log.d(TAG, "Toast");
                     break;
             }
         }

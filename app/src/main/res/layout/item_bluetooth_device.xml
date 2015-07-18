@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/device_icon"
-            android:src="@drawable/ic_bluetooth_connect"
+            android:src="@drawable/ic_bluetooth_conection"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"/>
