@@ -1,8 +1,10 @@
 package com.gpf.app.arduinorc.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -54,6 +56,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         bAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bAdapter == null) {
             Log.d(TAG, "Bluetooth is not available");
+            Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
             //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
             //getActivity().finish();
         }
@@ -108,7 +111,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         try {
             mListener = (OnBluetoothInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString() + " must implement OnBluetoothInteractionListener");
         }
     }
 
@@ -186,12 +189,13 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         if (bAdapter != null && mListener != null) {
             bAdapter.cancelDiscovery();
             BluetoothDevice device = devices.get(position);
-            mListener.onDeviceClick(device);
+            connectDialog("Connection", "Do you want connect with " + device.getName() + " ?", device).show();
+            //mListener.onDeviceClick(device);
         }
     }
 
     public interface OnBluetoothInteractionListener {
-        void onDeviceClick(BluetoothDevice device);
+        void connectToDevice(BluetoothDevice device);
     }
 
     public void refreshButtons(){
@@ -206,8 +210,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             }
             btn_search.setEnabled(state);
             btn_bonded.setEnabled(state);
-        }else{
-            Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -226,5 +228,27 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
 
     public void setDevices(){
         adapter.setDevices(devices);
+    }
+
+    private AlertDialog connectDialog(String title, String msg, final BluetoothDevice device) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(msg);
+
+        DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mListener.connectToDevice(device);
+            }
+        };
+        DialogInterface.OnClickListener listenerCancel = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        };
+        alertDialogBuilder.setPositiveButton(R.string.connect, listenerOk);
+        alertDialogBuilder.setNegativeButton(R.string.cancel, listenerCancel);
+
+        return alertDialogBuilder.create();
     }
 }

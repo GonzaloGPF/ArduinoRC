@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!--Contenido: Toolbar + Fragment dinámico-->
+    <!--Content: Toolbar + Dynamic Fragment-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,10 +21,10 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fragmentContainer"
-            android:layout_below="@+id/toolbar">
+            android:id="@+id/fragmentContainer">
         </FrameLayout>
     </LinearLayout>
+    <!--Navigation: Static NavigationDrawer Fragment-->
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"

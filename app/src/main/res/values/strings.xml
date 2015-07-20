@@ -7,11 +7,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
-    <string name="controller_fragment">ControllerFragment</string>
-    <string name="bluetooth_fragment">BluetoothFragment</string>
-    <string name="game_pad_fragment">GamePadFragment</string>
-    <string name="receiver_fragment">ReceiverFragment</string>
-    <string name="programmer_fragment">ControllerFragment</string>
+    <string name="controller_fragment">Controller</string>
+    <string name="bluetooth_fragment">Bluetooth</string>
+    <string name="game_pad_fragment">GamePad</string>
+    <string name="receiver_fragment">Receiver</string>
+    <string name="programmer_fragment">Programmer</string>
     <string name="connect">Connect</string>
     <string name="cancel">Cancel</string>
     <string name="connecting">[Connecting]</string>
@@ -27,5 +27,7 @@
         <item>Receiver</item>
         <item>Programmer</item>
     </string-array>
+    <string name="title_activity_input_list">InputListActivity</string>
+    <string name="disconnect">Disconnect</string>
 
 </resources>

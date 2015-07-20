@@ -17,7 +17,14 @@ public class Commander {
     private CommanderListener commanderListener;
 
     public Map<Integer, String> commandsMap = new HashMap<>();
-    public String commands[] = {"o", "O", "m", "p", "a", "b", "x", "y", "u", "l", "r", "d", "g", "h", "j", "k", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    public String commands[] = {"o", "O", // On/Off
+            "m", "p",                     // Minus/Plus
+            "a", "b", "x", "y",           // A, B, X, Y
+            "u", "l", "r", "d",           // D-Pad directions
+            "i",                          // Input Refresh
+            "g", "h", "j", "k",           // Joystick directions
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}; // Speeds values
+
     private boolean on = false;
 
     private Commander(){
@@ -84,6 +91,9 @@ public class Commander {
             case R.id.btn_down:
                 command = commandsMap.get(11);
                 break;
+            case R.id.btn_refresh:
+                command = commandsMap.get(12);
+                break;
         }
         sendCommand(command);
         return command;
@@ -96,25 +106,25 @@ public class Commander {
                 command = commandsMap.get(8);
                 break;
             case JoystickView.FRONT_RIGHT:
-                command = commandsMap.get(12);
+                command = commandsMap.get(13);
                 break;
             case JoystickView.RIGHT:
                 command = commandsMap.get(10);
                 break;
             case JoystickView.RIGHT_BOTTOM:
-                command = commandsMap.get(13);
+                command = commandsMap.get(14);
                 break;
             case JoystickView.BOTTOM:
                 command = commandsMap.get(11);
                 break;
             case JoystickView.BOTTOM_LEFT:
-                command = commandsMap.get(14);
+                command = commandsMap.get(15);
                 break;
             case JoystickView.LEFT:
                 command = commandsMap.get(9);
                 break;
             case JoystickView.LEFT_FRONT:
-                command = commandsMap.get(15);
+                command = commandsMap.get(16);
                 break;
             default:
         }
@@ -122,7 +132,7 @@ public class Commander {
         return command;
     }
 
-    public String getSpeedCommand(int speed){
+    public String getSpeedCommand(int speed){ //speed => from seekBar with values between 0 - 9
         int BASE = commands.length-10;
         String command = commandsMap.get(BASE + speed);
         sendCommand(command);

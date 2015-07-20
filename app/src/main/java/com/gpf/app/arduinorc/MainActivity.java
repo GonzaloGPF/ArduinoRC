@@ -1,13 +1,10 @@
 package com.gpf.app.arduinorc;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -28,13 +25,12 @@ import com.gpf.app.arduinorc.fragments.NavigationFragment;
 import com.gpf.app.arduinorc.services.BluetoothService;
 
 public class MainActivity extends AppCompatActivity implements BluetoothFragment.OnBluetoothInteractionListener, BluetoothService.BTListener, NavigationFragment.NavigationListener {
-    private static final String TAG = "com.gpf.app.arduinorc";
+    private static final String TAG = "MainActivity";
     private static final String BT_STATE = "bt_state";
 
     private Toolbar toolbar;
 
     private NavigationFragment navigationFragment;
-    private BluetoothSocket clientSocket;
     private BluetoothService bluetoothService;
     private boolean isBound;
     private String bluetoothState;
@@ -102,8 +98,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         navigationFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigationDrawer);
         navigationFragment.setUp(drawerLayout, toolbar);
@@ -115,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         }else{
             bluetoothState = savedInstanceState.getString(BT_STATE);
         }
-        setToolbarTitle();
         registerBluetoothEvents();
     }
 
@@ -125,12 +121,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         outState.putString(BT_STATE, bluetoothState);
     }
 
-
     @Override
-    protected void onPostResume() {
+    protected void onResume() {
         super.onPostResume();
-//        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-//        toolbar.setTitle(currentFragment.getTag());
+        setToolbarTitle();
     }
 
     @Override
@@ -147,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_disconnect){
+            if(BluetoothService.bluetoothService!=null) {
+                BluetoothService.bluetoothService.stop();
+                bluetoothState = getString(R.string.not_connected);
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     public void onBackPressed(){
         super.onBackPressed();
     }
-
 
     @Override
     public void onDestroy() {
@@ -172,34 +171,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     }
 
     @Override
-    public void onDeviceClick(BluetoothDevice device) {
-        connectDialog("Connection", "Do you want connect with " + device.getName() + " ?", device).show();
-    }
-
-    private AlertDialog connectDialog(String title, String msg, final BluetoothDevice device) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(title);
-        alertDialogBuilder.setMessage(msg);
-
-        DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getApplication(), BluetoothService.class);
-                intent.putExtra(BluetoothService.BT_DEVICE, device);
-                startService(intent);
-                bindBluetoothService(intent);
-                //connectDevice(device.address);
-            }
-        };
-        DialogInterface.OnClickListener listenerCancel = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        };
-        alertDialogBuilder.setPositiveButton(R.string.connect, listenerOk);
-        alertDialogBuilder.setNegativeButton(R.string.cancel, listenerCancel);
-
-        return alertDialogBuilder.create();
+    public void connectToDevice(BluetoothDevice device) {
+        Intent intent = new Intent(getApplication(), BluetoothService.class);
+        intent.putExtra(BluetoothService.BT_DEVICE, device);
+        startService(intent);
+        bindBluetoothService(intent);
     }
 
     private void bindBluetoothService(Intent intent) {
@@ -240,6 +216,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     }
 
     @Override
+    public void onMsgReceived(byte[] data, int bytes) {
+
+    }
+
+    @Override
     public void onNavigationChanged() {
         setToolbarTitle();
     }
@@ -252,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                toolbar.setTitle(currentFragmentName +" "+ bluetoothState);
+                toolbar.setTitle(currentFragmentName + " " + bluetoothState);
             }
         });
     }

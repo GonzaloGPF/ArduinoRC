@@ -23,16 +23,20 @@ public class BluetoothService extends Service {
 
     public static final String TAG = "BluetoothService";
     public static final String BT_DEVICE = "bt_device";
+    public static final String BT_STOP = "bt_stop";
+    public static final String BT_STOP_VALUE = "bt_stop_value";
     public static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
     public static final int STATE_NONE = 0; // we're doing nothing
     public static final int STATE_LISTEN = 1; // now listening for incoming connections
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3; // now connected to a remote device
+    public static BluetoothService bluetoothService;
 
     public static final int MSG_STATE_CHANGE = 10;
     public static final int MSG_READ = 11;
     public static final int MSG_WRITE = 12;
     public static final int MSG_TOAST = 13;
+
 
     public static int mState = STATE_NONE;
 
@@ -57,9 +61,9 @@ public class BluetoothService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Onstart Command");
+        Log.d(TAG, "OnStart Command");
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter != null) {
+        if (mBluetoothAdapter != null && intent != null) {
             device = intent.getParcelableExtra(BT_DEVICE);
             deviceName = device.getName();
             String address = device.getAddress();
@@ -70,10 +74,13 @@ public class BluetoothService extends Service {
                 return 0;
             }
         }
-        String stopservice = intent.getStringExtra("stopservice");
-        if (stopservice != null && stopservice.length() > 0) {
-            stop();
-        }
+//        if(intent!=null) {
+//            String stopService = intent.getStringExtra(BT_STOP);
+//            if (stopService != null && stopService.equals(BT_STOP_VALUE)) {
+//                stop();
+//            }
+//        }
+        bluetoothService = this;
         return START_STICKY;
     }
 
@@ -269,9 +276,12 @@ public class BluetoothService extends Service {
             int bytes;
             while (!Thread.interrupted()) {
                 try {
-                    bytes = mmInStream.read(buffer);
-                    mHandler.obtainMessage(MSG_READ, bytes, -1, buffer).sendToTarget();
-                    sleep(500);
+                    if(mmInStream.available()>=4) {
+                        bytes = mmInStream.read(buffer);
+                        mHandler.obtainMessage(MSG_READ, bytes, -1, buffer).sendToTarget();
+                        sleep(500);
+                        buffer = new byte[1024];
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     setState(STATE_NONE);
@@ -359,7 +369,9 @@ public class BluetoothService extends Service {
                     }
                     break;
                 case MSG_READ:
-                    Log.d(TAG, "Read: "+msg.arg1);
+                    if(BTListener != null){
+                        BTListener.onMsgReceived((byte[])msg.obj, msg.arg1);
+                    }
                     break;
                 case MSG_WRITE:
                     Log.d(TAG, "Write");
@@ -377,5 +389,6 @@ public class BluetoothService extends Service {
 
     public interface BTListener{
         void onStateChanged(int state);
+        void onMsgReceived(byte[] data, int bytes);
     }
 }

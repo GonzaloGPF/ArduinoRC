@@ -15,7 +15,7 @@ import java.util.List;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.NavigationHolder> {
     private LayoutInflater inflater;
-    public List<NavigationRow> data;
+    private List<NavigationRow> data;
     private ClickListener clickListener;
 
     public NavigationAdapter(Context context, List<NavigationRow> data){
@@ -73,6 +73,5 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Na
         public void setTitle(String text){
             this.title.setText(text);
         }
-
     }
 }

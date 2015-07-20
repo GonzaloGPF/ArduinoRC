@@ -13,6 +13,8 @@
             android:layout_weight="1"
             android:id="@+id/btn_bluetooth"
             android:text="@string/btn_bluetooth"
+            android:background="@color/primaryColor"
+            android:textColor="@android:color/white"
             android:drawableTop="@drawable/ic_bluetooth"/>
         <Button
             android:layout_width="0dp"
@@ -20,6 +22,8 @@
             android:layout_weight="1"
             android:id="@+id/btn_search"
             android:text="@string/btn_search"
+            android:background="@color/primaryColor"
+            android:textColor="@android:color/white"
             android:drawableTop="@drawable/ic_search"/>
         <Button
             android:layout_width="0dp"
@@ -27,6 +31,8 @@
             android:layout_weight="1"
             android:id="@+id/btn_bonded"
             android:text="@string/btn_bonded"
+            android:background="@color/primaryColor"
+            android:textColor="@android:color/white"
             android:drawableTop="@drawable/ic_bluetooth_bonded"/>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
