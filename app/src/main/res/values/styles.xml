@@ -24,7 +24,6 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColorPrimary">@color/button_text_color</item>
         <item name="android:textColor">@color/button_text_color</item>
-        <item name="android:gravity">center</item>
     </style>
 
     <style name="d_pad_button">
@@ -41,7 +40,7 @@
         <item name="android:layout_margin">10dp</item>
         <item name="android:textColorPrimary">@color/button_text_color</item>
         <item name="android:textColor">@color/button_text_color</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>

@@ -30,12 +30,7 @@ import java.util.List;
 public class ReceiverFragment extends Fragment implements BluetoothService.BTListener, View.OnClickListener {
 
     private static final String TAG = "ReceiverFragment";
-    private static final String INPUT_ROWS = "input_rows";
     private static final String INPUT_NAMES = "input_names";
-    private BluetoothService bluetoothService;
-    private ImageButton btn_refresh, btn_delete;
-    private Button btn_settings;
-    private RecyclerView recyclerView;
     private InputRowAdapter adapter;
     private List<InputRow> inputRows;
 
@@ -50,14 +45,13 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putParcelableArrayList(INPUT_ROWS, (ArrayList<? extends Parcelable>) inputRows);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bluetoothService = BluetoothService.bluetoothService;
-        if(bluetoothService!=null){
+        BluetoothService bluetoothService = BluetoothService.bluetoothService;
+        if(bluetoothService !=null){
             bluetoothService.setListener(this);
         }
     }
@@ -65,20 +59,16 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_receiver, container, false);
-        btn_refresh = (ImageButton) view.findViewById(R.id.btn_refresh);
-        btn_settings = (Button) view.findViewById(R.id.btn_add_input);
-        btn_delete = (ImageButton) view.findViewById(R.id.btn_delete);
+        ImageButton btn_refresh = (ImageButton) view.findViewById(R.id.btn_refresh);
+        Button btn_settings = (Button) view.findViewById(R.id.btn_add_input);
+        ImageButton btn_delete = (ImageButton) view.findViewById(R.id.btn_delete);
         btn_refresh.setOnClickListener(this);
         btn_settings.setOnClickListener(this);
         btn_delete.setOnClickListener(this);
-        recyclerView = (RecyclerView) view.findViewById(R.id.input_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.input_list);
         adapter = new InputRowAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        if(savedInstanceState!=null){
-//            inputRows = savedInstanceState.getParcelableArrayList(INPUT_ROWS);
-//            adapter.setData(inputRows);
-//        }
         return view;
     }
 
@@ -105,19 +95,13 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
         Log.d(TAG, "msg: " + msg);
         String[] receivedValues = msg.split(" ");
         setInputRowValues(receivedValues);
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d(TAG, command);
-//                commandValue.setText(command);
-//        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_refresh:
-                String command = Commander.getInstance().getCommand(v);
+                String command = Commander.getInstance(getActivity()).getCommand(v);
                 BluetoothService.write(command.getBytes());
                 break;
             case R.id.btn_add_input:
@@ -158,6 +142,7 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
             public void onClick(DialogInterface dialog, int which) {
                 String inputText = input.getText().toString();
                 if(inputText.length()>0){
+                    inputText = inputText.replace("/", "-");
                     InputRow inputRow = new InputRow(inputText, "No Value");
                     inputRows.add(inputRow);
                     adapter.setData(inputRows);

@@ -1,181 +1,196 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/command_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:weightSum="1"
         android:gravity="center">
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:id="@+id/tv_command_label"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
             android:textSize="22sp"
-            android:text="Command Send:"/>
-        <TextView
+            android:text="Command:"
+            android:layout_centerVertical="true" />
+        <Button
+            style="@style/image_button"
             android:id="@+id/command_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:textSize="22sp"
-            android:text="Value"/>
+            android:background="@drawable/display"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         <ImageView
             android:id="@+id/led"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:src="@drawable/ic_led_red"/>
-    </LinearLayout>
-    <LinearLayout
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_led_red"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:weightSum="1"
-        android:gravity="center_vertical">
-        <ImageView
-            android:layout_width="0dp"
+        card_view:cardCornerRadius="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:src="@drawable/ic_speed"/>
-        <SeekBar
-            android:id="@+id/speedBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:max="10"
-            android:progress="5" />
-        <TextView
-            android:id="@+id/speed_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:weightSum="1"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_speed"/>
+                <SeekBar
+                    android:id="@+id/speedBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:max="9"
+                    android:progress="5" />
+                <TextView
+                    android:id="@+id/speed_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <com.zerokol.views.JoystickView
-            android:id="@+id/joystickView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:baselineAligned="false"
-            android:gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:visibility="gone"/>
+                <com.zerokol.views.JoystickView
+                    android:id="@+id/joystickView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:baselineAligned="false"
+                    android:gravity="center_vertical"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"/>
 
-        <TableLayout
-            android:id="@+id/dPadView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/d_pad"
-            android:layout_gravity="center"
-            android:baselineAligned="false"
-            android:gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:visibility="visible">
-            <TableRow>
-                <Space
-                    style="@style/d_pad_button"
-                    android:layout_weight="1"/>
-                <Button
-                    style="@style/d_pad_button"
-                    android:id="@+id/btn_up"
-                    android:layout_weight="1"/>
-                <Space
-                    style="@style/d_pad_button"
-                    android:layout_weight="1"/>
-            </TableRow>
-            <TableRow>
-                <Button
-                    style="@style/d_pad_button"
-                    android:id="@+id/btn_left"
-                    android:layout_weight="1"/>
-                <Space
-                    style="@style/d_pad_button"
-                    android:layout_weight="1"/>
-                <Button
-                    style="@style/d_pad_button"
-                    android:id="@+id/btn_right"
-                    android:layout_weight="1"/>
-            </TableRow>
-            <TableRow>
-                <Space
-                    style="@style/d_pad_button"
-                    android:layout_weight="1"/>
-                <Button
-                    style="@style/d_pad_button"
-                    android:id="@+id/btn_down"
-                    android:layout_weight="1" />
-                <Space
-                    style="@style/d_pad_button"
-                    android:layout_weight="1"/>
-            </TableRow>
-        </TableLayout>
-        <TableLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:baselineAligned="false">
-            <TableRow
+                <TableLayout
+                    android:id="@+id/dPadView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/d_pad"
+                    android:layout_gravity="center"
+                    android:baselineAligned="false"
+                    android:gravity="center_vertical"
+                    android:layout_margin="10dp"
+                    android:visibility="visible">
+                    <TableRow>
+                        <Space
+                            style="@style/d_pad_button"
+                            android:layout_weight="1"/>
+                        <Button
+                            style="@style/d_pad_button"
+                            android:id="@+id/btn_up"
+                            android:layout_weight="1"/>
+                        <Space
+                            style="@style/d_pad_button"
+                            android:layout_weight="1"/>
+                    </TableRow>
+                    <TableRow>
+                        <Button
+                            style="@style/d_pad_button"
+                            android:id="@+id/btn_left"
+                            android:layout_weight="1"/>
+                        <Space
+                            style="@style/d_pad_button"
+                            android:layout_weight="1"/>
+                        <Button
+                            style="@style/d_pad_button"
+                            android:id="@+id/btn_right"
+                            android:layout_weight="1"/>
+                    </TableRow>
+                    <TableRow>
+                        <Space
+                            style="@style/d_pad_button"
+                            android:layout_weight="1"/>
+                        <Button
+                            style="@style/d_pad_button"
+                            android:id="@+id/btn_down"
+                            android:layout_weight="1" />
+                        <Space
+                            style="@style/d_pad_button"
+                            android:layout_weight="1"/>
+                    </TableRow>
+                </TableLayout>
+                <TableLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:baselineAligned="false">
+                    <TableRow
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:id="@+id/btn_x"
+                            style="@style/circle_button"
+                            android:layout_gravity="center"
+                            android:text="X" />
+                        <Button
+                            android:id="@+id/btn_y"
+                            style="@style/circle_button"
+                            android:layout_gravity="center"
+                            android:text="Y" />
+                    </TableRow>
+                    <TableRow
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:id="@+id/btn_a"
+                            style="@style/circle_button"
+                            android:layout_gravity="center"
+                            android:text="A" />
+                        <Button
+                            android:id="@+id/btn_b"
+                            style="@style/circle_button"
+                            android:layout_gravity="center"
+                            android:text="B" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
+                <ImageButton
+                    style="@style/image_button"
+                    android:id="@+id/btn_joystick"
+                    android:src="@drawable/ic_joystick" />
                 <Button
-                    android:id="@+id/btn_a"
-                    style="@style/circle_button"
-                    android:layout_gravity="center"
-                    android:text="A" />
+                    style="@style/image_button"
+                    android:id="@+id/btn_plus"
+                    android:text="+"/>
                 <Button
-                    android:id="@+id/btn_b"
-                    style="@style/circle_button"
-                    android:layout_gravity="center"
-                    android:text="B" />
-            </TableRow>
-            <TableRow
-                android:gravity="center_horizontal">
+                    style="@style/image_button"
+                    android:id="@+id/btn_minus"
+                    android:text="-"/>
                 <Button
-                    android:id="@+id/btn_x"
-                    style="@style/circle_button"
-                    android:layout_gravity="center"
-                    android:text="X" />
-
-                <Button
-                    android:id="@+id/btn_y"
-                    style="@style/circle_button"
-                    android:layout_gravity="center"
-                    android:text="Y" />
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-        <ImageButton
-            style="@style/image_button"
-            android:id="@+id/btn_joystick"
-            android:src="@drawable/ic_joystick" />
-
-        <Button
-            style="@style/image_button"
-            android:id="@+id/btn_plus"
-            android:text="+"/>
-
-        <Button
-            style="@style/image_button"
-            android:id="@+id/btn_minus"
-            android:text="-"/>
-
-        <Button
-            style="@style/image_button"
-            android:id="@+id/btn_on"
-            android:text="ON"/>
-
-    </LinearLayout>
-</LinearLayout>
+                    style="@style/image_button"
+                    android:id="@+id/btn_on"
+                    android:text="ON"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

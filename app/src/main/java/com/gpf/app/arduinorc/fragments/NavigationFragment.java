@@ -20,11 +20,8 @@ import com.gpf.app.arduinorc.utils.Constants;
 public class NavigationFragment extends Fragment implements NavigationAdapter.ClickListener {
 
     private static final String CURRENT_FRAGMENT_NAME = "current_fragment_name";
-    private RecyclerView recyclerView;
-    private NavigationAdapter adapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private Fragment currentFragment;
     private String currentFragmentName;
     private NavigationListener navigationListener;
 
@@ -54,8 +51,8 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.navigation_list);
-        adapter = new NavigationAdapter(getActivity(), Constants.getNavigationRows());
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.navigation_list);
+        NavigationAdapter adapter = new NavigationAdapter(getActivity(), Constants.getNavigationRows());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -77,7 +74,6 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
                 break;
         }
         if(nextFragment != null){
-            currentFragment = nextFragment;
             ft.replace(R.id.fragmentContainer, nextFragment, currentFragmentName).commit();
             mDrawerLayout.closeDrawers();
             navigationListener.onNavigationChanged();

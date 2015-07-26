@@ -37,9 +37,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
     private OnBluetoothInteractionListener mListener;
 
     public static BluetoothFragment newInstance() {
-        //Bundle args = new Bundle();
-        //args.putBoolean(ADAPTER_STATE, param1);
-        //fragment.setArguments(args);
         return new BluetoothFragment();
     }
 
@@ -57,8 +54,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         if (bAdapter == null) {
             Log.d(TAG, "Bluetooth is not available");
             Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-            //getActivity().finish();
         }
     }
 
@@ -75,7 +70,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         recyclerView.setAdapter(adapter);
 
         if(devices!=null){
-            setDevices();
+            adapter.setDevices(devices);
         }
         setButtonsListeners();
         refreshButtons();
@@ -93,16 +88,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(DEVICES, devices);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -135,6 +120,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             case R.id.btn_bluetooth:
                 if(bAdapter.isEnabled()) {
                     bAdapter.disable();
+                    refreshButtons();
                 } else {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -143,8 +129,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             case R.id.btn_search:
                 devices.clear();
                 ((MainActivity) getActivity()).showProgressBar(true);
-                //setProgressBarIndeterminateVisibility(true);
-                //setTitle(R.string.scanning);
                 if (bAdapter.isDiscovering()) {
                     bAdapter.cancelDiscovery();
                 }
@@ -156,7 +140,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.btn_bonded:
                 devices = new ArrayList<>(bAdapter.getBondedDevices());
-                setDevices();
+                adapter.setDevices(devices);
                 break;
         }
         refreshButtons();
@@ -190,7 +174,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             bAdapter.cancelDiscovery();
             BluetoothDevice device = devices.get(position);
             connectDialog("Connection", "Do you want connect with " + device.getName() + " ?", device).show();
-            //mListener.onDeviceClick(device);
         }
     }
 
@@ -223,10 +206,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
 
     public void addDevice(BluetoothDevice device){
         devices.add(device);
-        adapter.setDevices(devices);
-    }
-
-    public void setDevices(){
         adapter.setDevices(devices);
     }
 

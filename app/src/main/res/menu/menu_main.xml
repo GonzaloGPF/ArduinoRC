@@ -11,6 +11,5 @@
         android:id="@+id/action_disconnect"
         android:orderInCategory="200"
         android:title="@string/disconnect"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_stop"/>
+        app:showAsAction="never"/>
 </menu>

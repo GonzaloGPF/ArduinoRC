@@ -79,7 +79,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 speedValue.setText(String.valueOf(speedBar.getProgress()));
-                String command = Commander.getInstance().getSpeedCommand(progress);
+                String command = Commander.getInstance(getActivity()).getSpeedCommand(progress);
                 if (command != null) {
                     BluetoothService.write(command.getBytes());
                 }
@@ -100,7 +100,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
         joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
             @Override
             public void onValueChanged(int angle, int power, int direction) {
-                String command = Commander.getInstance().getJoystickCommand(direction);
+                String command = Commander.getInstance(getActivity()).getJoystickCommand(direction);
                 BluetoothService.write(command.getBytes());
                 speedBar.setProgress(power / speedBar.getMax());
             }
@@ -141,7 +141,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
             button.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    String command = Commander.getInstance().getCommand(v);
+                    String command = Commander.getInstance(getActivity()).getCommand(v);
                     BluetoothService.write(command.getBytes());
                     return false;
                 }
@@ -149,7 +149,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
         }
         btn_on.setOnClickListener(this);
         btn_joystick.setOnClickListener(this);
-        Commander.getInstance().setCommanderListener(this);
+        Commander.getInstance(getActivity()).setCommanderListener(this);
     }
 
     @Override
@@ -176,8 +176,13 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_on){
-            String command = Commander.getInstance().getCommand(v);
+            String command = Commander.getInstance(getActivity()).getCommand(v);
             BluetoothService.write(command.getBytes());
+            if(Commander.onValue){
+                btn_on.setText("off");
+            }else{
+                btn_on.setText("on");
+            }
         }else{
             if(joystickMode){
                 joystick.setVisibility(View.GONE);
