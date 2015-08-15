@@ -37,7 +37,6 @@ public class BluetoothService extends Service {
     public static final int MSG_WRITE = 12;
     public static final int MSG_TOAST = 13;
 
-
     public static int mState = STATE_NONE;
 
     private BluetoothAdapter mBluetoothAdapter;
@@ -74,12 +73,6 @@ public class BluetoothService extends Service {
                 return 0;
             }
         }
-//        if(intent!=null) {
-//            String stopService = intent.getStringExtra(BT_STOP);
-//            if (stopService != null && stopService.equals(BT_STOP_VALUE)) {
-//                stop();
-//            }
-//        }
         bluetoothService = this;
         return START_STICKY;
     }

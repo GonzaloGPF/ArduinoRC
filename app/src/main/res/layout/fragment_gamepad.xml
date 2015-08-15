@@ -53,7 +53,8 @@
                 android:baselineAligned="false"
                 android:weightSum="1"
                 android:gravity="center_vertical">
-                <ImageView
+                <ImageButton
+                    android:id="@+id/speed_image"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"

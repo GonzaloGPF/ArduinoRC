@@ -1,7 +1,6 @@
 package com.gpf.app.arduinorc.fragments;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothSocket;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,28 +20,21 @@ import com.gpf.app.arduinorc.utils.Commander;
 import com.zerokol.views.JoystickView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class GamePadFragment extends Fragment implements View.OnClickListener, Commander.CommanderListener{
+public class GamePadFragment extends Fragment implements View.OnClickListener{
 
-    private static final String SOCKET = "socket";
-    private static final String COMMANDS = "commands";
-    private static final String TAG = "GamePad";
-
-    private BluetoothSocket clientSocket;
-    private String mParam1;
-    private String mParam2;
-
-    private ImageButton btn_joystick;
-    private Button btn_on, btn_plus, btn_minus, btn_a, btn_b, btn_x, btn_y, btn_up, btn_left, btn_right, btn_down;
+    private static final String TAG = "GamePadFragment";
+    private ImageButton btn_joystick, speedImage;
+    private Button btn_on;
     private TableLayout dPad;
     private JoystickView joystick;
     private ArrayList<Button> buttons = new ArrayList<>();
     private Boolean joystickMode = false;
+    private Boolean speedBlock = false;
     private SeekBar speedBar;
     private TextView speedValue, commandValue;
     private ImageView led;
-
-    private OnBControllerInteractionListener mListener;
 
     public static GamePadFragment newInstance() {
         return new GamePadFragment();
@@ -51,18 +43,6 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
     public GamePadFragment() {
         // Required empty public constructor
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +60,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 speedValue.setText(String.valueOf(speedBar.getProgress()));
                 String command = Commander.getInstance(getActivity()).getSpeedCommand(progress);
+                updateUI(command);
                 if (command != null) {
                     BluetoothService.write(command.getBytes());
                 }
@@ -101,8 +82,11 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
             @Override
             public void onValueChanged(int angle, int power, int direction) {
                 String command = Commander.getInstance(getActivity()).getJoystickCommand(direction);
+                updateUI(command);
                 BluetoothService.write(command.getBytes());
-                speedBar.setProgress(power / speedBar.getMax());
+                if (!speedBlock) {
+                    speedBar.setProgress(power / speedBar.getMax());
+                }
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
 
@@ -114,16 +98,17 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
     private void referenceButtons(View view){
         btn_joystick = (ImageButton) view.findViewById(R.id.btn_joystick);
         btn_on = (Button) view.findViewById(R.id.btn_on);
-        btn_plus = (Button) view.findViewById(R.id.btn_plus);
-        btn_minus = (Button) view.findViewById(R.id.btn_minus);
-        btn_a = (Button) view.findViewById(R.id.btn_a);
-        btn_b = (Button) view.findViewById(R.id.btn_b);
-        btn_x = (Button) view.findViewById(R.id.btn_x);
-        btn_y = (Button) view.findViewById(R.id.btn_y);
-        btn_up = (Button) view.findViewById(R.id.btn_up);
-        btn_left = (Button) view.findViewById(R.id.btn_left);
-        btn_right = (Button) view.findViewById(R.id.btn_right);
-        btn_down = (Button) view.findViewById(R.id.btn_down);
+        speedImage = (ImageButton) view.findViewById(R.id.speed_image);
+        Button btn_plus = (Button) view.findViewById(R.id.btn_plus);
+        Button btn_minus = (Button) view.findViewById(R.id.btn_minus);
+        Button btn_a = (Button) view.findViewById(R.id.btn_a);
+        Button btn_b = (Button) view.findViewById(R.id.btn_b);
+        Button btn_x = (Button) view.findViewById(R.id.btn_x);
+        Button btn_y = (Button) view.findViewById(R.id.btn_y);
+        Button btn_up = (Button) view.findViewById(R.id.btn_up);
+        Button btn_left = (Button) view.findViewById(R.id.btn_left);
+        Button btn_right = (Button) view.findViewById(R.id.btn_right);
+        Button btn_down = (Button) view.findViewById(R.id.btn_down);
         buttons.add(btn_plus);
         buttons.add(btn_minus);
         buttons.add(btn_a);
@@ -138,81 +123,93 @@ public class GamePadFragment extends Fragment implements View.OnClickListener, C
 
     private void setListeners(){
         for(Button button: buttons){
-            button.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    String command = Commander.getInstance(getActivity()).getCommand(v);
-                    BluetoothService.write(command.getBytes());
-                    return false;
-                }
-            });
+            button.setOnTouchListener(getTouchListener());
         }
         btn_on.setOnClickListener(this);
         btn_joystick.setOnClickListener(this);
-        Commander.getInstance(getActivity()).setCommanderListener(this);
+        speedImage.setOnClickListener(this);
+        //Commander.getInstance(getActivity()).setCommanderListener(this);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            //mListener = (OnBControllerInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    private View.OnTouchListener getTouchListener(){
+        return new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    String command = Commander.getInstance(getActivity()).getCommand(v);
+                    updateUI(command);
+                    BluetoothService.write(command.getBytes());
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP && isDirectionButton(v)){
+                    String command = Commander.getInstance(getActivity()).getStopCommand();
+                    updateUI(command);
+                    BluetoothService.write(command.getBytes());
+                }
+                return false;
+            }
+        };
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_on){
-            String command = Commander.getInstance(getActivity()).getCommand(v);
-            BluetoothService.write(command.getBytes());
-            if(Commander.onValue){
-                btn_on.setText("off");
-            }else{
-                btn_on.setText("on");
-            }
-        }else{
-            if(joystickMode){
-                joystick.setVisibility(View.GONE);
-                dPad.setVisibility(View.VISIBLE);
-                btn_joystick.setImageResource(R.drawable.ic_joystick);
-            }else{
-                dPad.setVisibility(View.GONE);
-                joystick.setVisibility(View.VISIBLE);
-                btn_joystick.setImageResource(R.drawable.ic_dpad);
-            }
-            joystickMode = !joystickMode;
+        switch (v.getId()){
+            case R.id.btn_on:
+                String command = Commander.getInstance(getActivity()).getCommand(v);
+                updateUI(command);
+                BluetoothService.write(command.getBytes());
+                if(Commander.onValue){
+                    btn_on.setText("off");
+                }else{
+                    btn_on.setText("on");
+                }
+                break;
+            case R.id.btn_joystick:
+                if(joystickMode){
+                    joystick.setVisibility(View.GONE);
+                    dPad.setVisibility(View.VISIBLE);
+                    btn_joystick.setImageResource(R.drawable.ic_joystick);
+                }else{
+                    dPad.setVisibility(View.GONE);
+                    joystick.setVisibility(View.VISIBLE);
+                    btn_joystick.setImageResource(R.drawable.ic_dpad);
+                }
+                joystickMode = !joystickMode;
+                break;
+            case R.id.speed_image:
+                if(speedBlock){
+                    speedImage.setBackgroundColor(getResources().getColor(R.color.primaryColorLight));
+                }else{
+                    speedImage.setBackgroundColor(Color.TRANSPARENT);
+                }
+                speedBlock = !speedBlock;
+                break;
         }
     }
 
-    @Override
-    public void onCommandSend(String command) {
-        commandValue.setText(command);
-        led.setImageResource(R.drawable.ic_led_green);
-    }
-    @Override
-    public void onCommandSent(){
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                led.setImageResource(R.drawable.ic_led_red);
-            }
-        });
+    private Boolean isDirectionButton(View v){
+        Integer directionButtonId[] = {R.id.btn_up, R.id.btn_left, R.id.btn_right, R.id.btn_down};
+        return Arrays.asList(directionButtonId).contains(v.getId());
     }
 
-    public interface OnBControllerInteractionListener {
-        void onControllerInteraction(int direction);
+    private void updateUI(String command){
+        commandValue.setText(command);
+        blinkLed();
+    }
+
+    private void blinkLed(){
+        led.setImageResource(R.drawable.ic_led_green);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                led.setImageResource(R.drawable.ic_led_red);
+                            }
+                        });
+                    }
+                }, 100
+        );
     }
 }

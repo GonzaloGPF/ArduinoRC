@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     private String currentFragmentName;
     private MainActivity self;
 
-    private BluetoothFragment bluetoothFragment;
     private final BroadcastReceiver bReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -64,13 +63,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
                 Log.d(TAG, "ACTION_FOUND: Device detected " + deviceDesc);
                 BluetoothFragment bluetoothFragment = (BluetoothFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.bluetooth_fragment));
                 bluetoothFragment.addDevice(device);
-                //addDevice(device);
             }
             if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)){
                 Toast.makeText(getBaseContext(), "Discovery Finished", Toast.LENGTH_SHORT).show();
                 showProgressBar(false);
-//                BluetoothFragment bluetoothFragment = (BluetoothFragment) getFragmentManager().findFragmentByTag(getString(R.string.bluetooth_fragment));
-//                bluetoothFragment.setDevices();
             }
         }
     };
@@ -95,19 +91,19 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         self = this;
         setContentView(R.layout.activity_main);
 
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigationDrawer);
         navigationFragment.setUp(drawerLayout, toolbar);
         navigationFragment.setListener(this);
 
         if(savedInstanceState==null){
-            bluetoothFragment = BluetoothFragment.newInstance();
+            BluetoothFragment bluetoothFragment = BluetoothFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, bluetoothFragment, getString(R.string.bluetooth_fragment)).commit();
         }else{
             bluetoothState = savedInstanceState.getString(BT_STATE);
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
 
     @Override
     protected void onResume() {
-        super.onPostResume();
+        super.onResume();
         setToolbarTitle();
     }
 

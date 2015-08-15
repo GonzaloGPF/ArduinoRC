@@ -52,6 +52,7 @@ public class ProgrammerFragment extends Fragment implements View.OnClickListener
         TextView arrow_down_left = (TextView) v.findViewById(R.id.arrow_down_left);
         TextView arrow_up_left = (TextView) v.findViewById(R.id.arrow_up_left);
         TextView arrow_up_right = (TextView) v.findViewById(R.id.arrow_up_right);
+        TextView btn_stop = (TextView) v.findViewById(R.id.btn_stop);
         TextView btn_a = (TextView) v.findViewById(R.id.btn_a);
         TextView btn_b = (TextView) v.findViewById(R.id.btn_b);
         TextView btn_x = (TextView) v.findViewById(R.id.btn_x);
@@ -79,6 +80,7 @@ public class ProgrammerFragment extends Fragment implements View.OnClickListener
         textViews.add(arrow_up_left);
         textViews.add(arrow_up_right);
         textViews.add(arrow_up);
+        textViews.add(btn_stop);
         textViews.add(btn_a);
         textViews.add(btn_b);
         textViews.add(btn_x);
