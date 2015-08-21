@@ -84,8 +84,8 @@ public class InputRowAdapter extends RecyclerView.Adapter<InputRowAdapter.InputR
 
         public AlertDialog editDialog(final int position){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(inflater.getContext());
-            alertDialog.setTitle("Edit Input");
-            alertDialog.setMessage("Enter a Name");
+            alertDialog.setTitle(R.string.edit_input);
+            alertDialog.setMessage(R.string.enter_name);
 
             final EditText input = new EditText(inflater.getContext());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -117,8 +117,8 @@ public class InputRowAdapter extends RecyclerView.Adapter<InputRowAdapter.InputR
 
                 }
             };
-            alertDialog.setPositiveButton("Edit", listenerOk);
-            alertDialog.setNegativeButton("Cancel", listenerCancel);
+            alertDialog.setPositiveButton(R.string.btn_edit, listenerOk);
+            alertDialog.setNegativeButton(R.string.btn_cancel, listenerCancel);
             return alertDialog.create();
         }
     }

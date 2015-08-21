@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class BluetoothService extends Service {
@@ -265,15 +266,26 @@ public class BluetoothService extends Service {
 
         @Override
         public void run() {
-            byte[] buffer = new byte[1024];
             int bytes;
+            byte[] resultBuff = new byte[0];
+            byte[] buff = new byte[1024];
             while (!Thread.interrupted()) {
                 try {
-                    if(mmInStream.available()>=4) {
-                        bytes = mmInStream.read(buffer);
-                        mHandler.obtainMessage(MSG_READ, bytes, -1, buffer).sendToTarget();
-                        sleep(500);
-                        buffer = new byte[1024];
+                    if(mmInStream.available() > 0){
+                        while((bytes = mmInStream.read(buff)) != -1){
+                            byte[] tbuff = new byte[resultBuff.length + bytes]; // temp buffer size = bytes already read + bytes last read
+                            System.arraycopy(resultBuff, 0, tbuff, 0, resultBuff.length); // copy previous bytes
+                            System.arraycopy(buff, 0, tbuff, resultBuff.length, bytes);  // copy current lot
+                            resultBuff = tbuff; // call the temp buffer as your result buff
+                            Log.d(TAG, "resultBuff: " + Arrays.toString(resultBuff));
+                            Log.d(TAG, "Last Byte: " + resultBuff[resultBuff.length-1]);
+                            if(resultBuff[resultBuff.length-1] == 10){ // 10 = 0A = Line Feed (ASCII) = Arduino's last byte from Serial.println()
+                                mHandler.obtainMessage(MSG_READ, resultBuff.length, -1, resultBuff).sendToTarget();
+                                resultBuff = new byte[0];
+                                buff = new byte[1024];
+                                sleep(500);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -367,10 +379,8 @@ public class BluetoothService extends Service {
                     }
                     break;
                 case MSG_WRITE:
-                    Log.d(TAG, "Write");
                     break;
                 case MSG_TOAST:
-                    Log.d(TAG, "Toast");
                     break;
             }
         }

@@ -50,9 +50,9 @@ public class BluetoothDeviceAdapter extends RecyclerView.Adapter<BluetoothDevice
         void deviceClick(View view, int position);
     }
 
-    public void setClickListener(ClickListener cl){
-        clickListener = cl;
-    }
+    //public void setClickListener(ClickListener cl){
+    //    clickListener = cl;
+    //}
 
     public class BluetoothHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView icon;

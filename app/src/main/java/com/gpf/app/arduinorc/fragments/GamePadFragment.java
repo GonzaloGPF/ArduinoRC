@@ -31,7 +31,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
     private JoystickView joystick;
     private ArrayList<Button> buttons = new ArrayList<>();
     private Boolean joystickMode = false;
-    private Boolean speedBlock = false;
+    private Boolean speedBlock = true;
     private SeekBar speedBar;
     private TextView speedValue, commandValue;
     private ImageView led;

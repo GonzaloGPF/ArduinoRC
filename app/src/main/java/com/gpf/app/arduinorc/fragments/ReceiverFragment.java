@@ -117,16 +117,14 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
         for(int i=0; i<inputRows.size() && i < receivedValues.length; i++){
             InputRow input = inputRows.get(i);
             input.setValue(receivedValues[i]);
-            if(i==inputRows.size()-1){
-                adapter.notifyDataSetChanged();
-            }
         }
+        adapter.notifyDataSetChanged();
     }
 
     public AlertDialog addDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle("Add Input");
-        alertDialog.setMessage("Enter a Name");
+        alertDialog.setTitle(R.string.add_input);
+        alertDialog.setMessage(R.string.enter_name);
 
         final EditText input = new EditText(getActivity());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -143,7 +141,7 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
                 String inputText = input.getText().toString();
                 if(inputText.length()>0){
                     inputText = inputText.replace("/", "-");
-                    InputRow inputRow = new InputRow(inputText, "No Value");
+                    InputRow inputRow = new InputRow(inputText, getString(R.string.no_value));
                     inputRows.add(inputRow);
                     adapter.setData(inputRows);
                 }
@@ -155,15 +153,15 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
 
             }
         };
-        alertDialog.setPositiveButton("Add", listenerOk);
-        alertDialog.setNegativeButton("Cancel", listenerCancel);
+        alertDialog.setPositiveButton(R.string.btn_add, listenerOk);
+        alertDialog.setNegativeButton(R.string.btn_cancel, listenerCancel);
         return alertDialog.create();
     }
 
     public AlertDialog deleteDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle("Delete all Inputs");
-        alertDialog.setMessage("Are you sure?");
+        alertDialog.setTitle(R.string.delete_all_inputs);
+        alertDialog.setMessage(R.string.confirm);
         alertDialog.setIcon(R.drawable.ic_delete_black);
 
         DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener(){
@@ -171,7 +169,7 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
             public void onClick(DialogInterface dialog, int which) {
                 inputRows = new ArrayList<>();
                 adapter.setData(inputRows);
-                inputRows.add(new InputRow("Input 1", "No Value"));
+                inputRows.add(new InputRow("Input 1", getString(R.string.no_value)));
                 saveInputNames();
             }
         };
@@ -181,8 +179,8 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
 
             }
         };
-        alertDialog.setPositiveButton("Delete", listenerOk);
-        alertDialog.setNegativeButton("Cancel", listenerCancel);
+        alertDialog.setPositiveButton(R.string.btn_delete, listenerOk);
+        alertDialog.setNegativeButton(R.string.btn_cancel, listenerCancel);
         return alertDialog.create();
     }
 
@@ -209,7 +207,7 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     public void setInputRows(String inputNames){
         inputRows = new ArrayList<>();
         for(String inputName : inputNames.split("/")){
-            InputRow inputRow = new InputRow(inputName, "No Value");
+            InputRow inputRow = new InputRow(inputName, getString(R.string.no_value));
             inputRows.add(inputRow);
         }
         adapter.setData(inputRows);

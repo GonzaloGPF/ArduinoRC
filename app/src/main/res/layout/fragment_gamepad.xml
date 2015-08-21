@@ -1,21 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/img_blue_bg">
     <RelativeLayout
         android:id="@+id/command_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_command_label"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:textSize="22sp"
-            android:text="Command:"
-            android:layout_centerVertical="true" />
         <Button
             style="@style/image_button"
             android:id="@+id/command_value"
@@ -39,7 +31,7 @@
         android:id="@+id/card_view_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp"
+        card_view:cardCornerRadius="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true">
@@ -58,14 +50,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
-                    android:src="@drawable/ic_speed"/>
+                    android:src="@drawable/ic_speed"
+                    android:background="@android:color/transparent"/>
                 <SeekBar
                     android:id="@+id/speedBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
                     android:max="9"
-                    android:progress="5" />
+                    android:progress="3" />
                 <TextView
                     android:id="@+id/speed_value"
                     android:layout_width="0dp"

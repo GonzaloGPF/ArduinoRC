@@ -122,8 +122,8 @@ public class ProgrammerFragment extends Fragment implements View.OnClickListener
     public AlertDialog createInputDialog(View view){
         final TextView textView = (TextView) view;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle("Command Modification");
-        alertDialog.setMessage("Enter a Value");
+        alertDialog.setTitle(R.string.command_modification);
+        alertDialog.setMessage(R.string.enter_value);
 
         final EditText input = new EditText(getActivity());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -151,8 +151,8 @@ public class ProgrammerFragment extends Fragment implements View.OnClickListener
 
             }
         };
-        alertDialog.setPositiveButton("Ok", listenerOk);
-        alertDialog.setNegativeButton("Cancel", listenerCancel);
+        alertDialog.setPositiveButton(R.string.btn_edit, listenerOk);
+        alertDialog.setNegativeButton(R.string.btn_cancel, listenerCancel);
         return alertDialog.create();
     }
 

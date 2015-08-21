@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
             if(BluetoothService.bluetoothService!=null) {
                 BluetoothService.bluetoothService.stop();
                 bluetoothState = getString(R.string.not_connected);
+                setToolbarTitle();
             }
         }
 

@@ -6,5 +6,7 @@
     <dimen name="btn_circle">48dp</dimen>
     <dimen name="btn_d_pad">56dp</dimen>
     <dimen name="btn_square">48dp</dimen>
+    <dimen name="programmer_top">58dp</dimen>
     <dimen name="programmer_row">48dp</dimen>
+
 </resources>

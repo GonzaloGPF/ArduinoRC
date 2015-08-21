@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/navigation_image"
-        android:src="@drawable/image_drawer"
+        android:src="@drawable/img_blue_bg"
         android:scaleType="fitXY"/>
 
     <android.support.v7.widget.RecyclerView

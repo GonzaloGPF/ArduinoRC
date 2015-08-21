@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 
 import com.gpf.app.arduinorc.R;
 import com.gpf.app.arduinorc.adapters.NavigationAdapter;
-import com.gpf.app.arduinorc.utils.Constants;
+import com.gpf.app.arduinorc.items.NavigationRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class NavigationFragment extends Fragment implements NavigationAdapter.ClickListener {
@@ -52,7 +55,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.navigation_list);
-        NavigationAdapter adapter = new NavigationAdapter(getActivity(), Constants.getNavigationRows());
+        NavigationAdapter adapter = new NavigationAdapter(getActivity(), getNavigationRows());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -118,6 +121,20 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
         }else{
             return getString(R.string.bluetooth_fragment);
         }
+    }
+
+    private List<NavigationRow> getNavigationRows(){
+        List<NavigationRow> data = new ArrayList<>();
+        int icons[] = {R.drawable.ic_connection, R.drawable.ic_controller};
+        String titles[] = {
+                getString(R.string.bluetooth_fragment),
+                getString(R.string.controller_fragment)
+        };
+        for(int i=0; i<icons.length && i<titles.length; i++){
+            NavigationRow row = new NavigationRow(icons[i], titles[i]);
+            data.add(row);
+        }
+        return data;
     }
 
     public interface NavigationListener{

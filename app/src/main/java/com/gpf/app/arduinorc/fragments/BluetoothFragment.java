@@ -53,7 +53,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         bAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bAdapter == null) {
             Log.d(TAG, "Bluetooth is not available");
-            Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.bluetooth_not_available, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -120,7 +120,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             case R.id.btn_bluetooth:
                 if(bAdapter.isEnabled()) {
                     bAdapter.disable();
-                    refreshButtons();
                 } else {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -133,9 +132,9 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
                     bAdapter.cancelDiscovery();
                 }
                 if (bAdapter.startDiscovery()) {
-                    Toast.makeText(getActivity(), "Discovering", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.discovering, Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(getActivity(), "Discovering Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.discovering_error, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_bonded:
@@ -159,7 +158,6 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             }
         }
         if (requestCode == REQUEST_DISCOVERABLE){
-
             if (resultCode == Activity.RESULT_OK) {
                 Log.d(TAG, "Bluetooth: discovery finished");
             } else {
@@ -173,7 +171,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         if (bAdapter != null && mListener != null) {
             bAdapter.cancelDiscovery();
             BluetoothDevice device = devices.get(position);
-            connectDialog("Connection", "Do you want connect with " + device.getName() + " ?", device).show();
+            connectDialog(getString(R.string.connection), getString(R.string.connection_confirm) + device.getName() + "?", device).show();
         }
     }
 
@@ -186,10 +184,10 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
             Boolean state = bAdapter.isEnabled();
             if (state) {
                 btn_bluetooth.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bluetooth_disable, 0, 0);
-                btn_bluetooth.setText("Disable");
+                btn_bluetooth.setText(R.string.disable);
             } else {
                 btn_bluetooth.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bluetooth, 0, 0);
-                btn_bluetooth.setText("Enable");
+                btn_bluetooth.setText(R.string.enable);
             }
             btn_search.setEnabled(state);
             btn_bonded.setEnabled(state);

@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">AndroidRC</string>
+    <string name="controller_fragment">Controlador</string>
+    <string name="bluetooth_fragment">Bluetooth</string>
+    <string name="game_pad_fragment">GamePad</string>
+    <string name="receiver_fragment">Receptor</string>
+    <string name="programmer_fragment">Programador</string>
+
+    <string name="action_settings">Opciones</string>
+    <string name="connect">Connectar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="connecting">[Conectando]</string>
+    <string name="connected">[Conectado]</string>
+    <string name="not_connected">[Sin Conexión]</string>
+    <string name="btn_search">Buscar</string>
+    <string name="btn_bluetooth">Bluetooth</string>
+    <string name="btn_bonded">Enlazados</string>
+
+    <string-array name="tabs">
+        <item>Mando</item>
+        <item>Receptor</item>
+        <item>Programados</item>
+    </string-array>
+    <string name="disconnect">Desconectar</string>
+    <string name="add_input">Añadir Entrada</string>
+    <string name="enter_name">Ingresa un Nombre</string>
+    <string name="no_value">Sin Datos</string>
+    <string name="btn_add">Añadir</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="delete_all_inputs">Borrar todas las Entradas</string>
+    <string name="confirm">¿Estás Seguro?</string>
+    <string name="btn_delete">Borrar</string>
+    <string name="command">Comando</string>
+    <string name="enable">Activar</string>
+    <string name="disable">Desactivar</string>
+    <string name="bluetooth_not_available">Bluetooth no disponible</string>
+    <string name="discovering">Explorando</string>
+    <string name="discovering_error">Error de Exploración</string>
+    <string name="connection">Conexión</string>
+    <string name="connection_confirm">"¿Conectarse con "</string>
+    <string name="command_modification">Modificar Comando</string>
+    <string name="enter_value">Ingresa un Valor</string>
+    <string name="edit_input">Editar Entrada</string>
+    <string name="btn_edit">Editar</string>
+    <string name="close_drawer">Cerrar</string>
+    <string name="open_drawer">Abrir</string>
+
+</resources>
