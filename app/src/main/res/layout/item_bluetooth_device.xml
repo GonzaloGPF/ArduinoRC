@@ -23,7 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/device_icon"
+            android:layout_toRightOf="@+id/device_icon"
             android:orientation="vertical"
             android:id="@+id/linearLayout">
             <TextView
