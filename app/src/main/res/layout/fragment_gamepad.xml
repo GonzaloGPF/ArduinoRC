@@ -80,7 +80,7 @@
                     android:baselineAligned="false"
                     android:gravity="center_vertical"
                     android:layout_margin="10dp"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
                 <TableLayout
                     android:id="@+id/dPadView"
@@ -92,7 +92,7 @@
                     android:baselineAligned="false"
                     android:gravity="center_vertical"
                     android:layout_margin="10dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
                     <TableRow>
                         <Space
                             style="@style/d_pad_button"

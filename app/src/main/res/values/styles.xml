@@ -19,7 +19,7 @@
         <item name="android:layout_width">@dimen/btn_circle</item>
         <item name="android:layout_height">@dimen/btn_circle</item>
         <item name="android:background">@drawable/btn_circle</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_margin">5dp</item>
         <item name="android:padding">5dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColorPrimary">@color/button_text_color</item>

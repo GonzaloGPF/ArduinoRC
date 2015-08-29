@@ -5,6 +5,7 @@
     <string name="game_pad_fragment">GamePad</string>
     <string name="receiver_fragment">Receptor</string>
     <string name="programmer_fragment">Programador</string>
+    <string name="console_fragment">Consola</string>
 
     <string name="action_settings">Opciones</string>
     <string name="connect">Connectar</string>

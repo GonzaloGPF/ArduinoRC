@@ -75,6 +75,10 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
                 nextFragment = ControllerFragment.newInstance();
                 currentFragmentName = getString(R.string.controller_fragment);
                 break;
+            case 2:
+                nextFragment = ConsoleFragment.newInstance();
+                currentFragmentName = getString(R.string.console_fragment);
+                break;
         }
         if(nextFragment != null){
             ft.replace(R.id.fragmentContainer, nextFragment, currentFragmentName).commit();
@@ -125,10 +129,14 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
 
     private List<NavigationRow> getNavigationRows(){
         List<NavigationRow> data = new ArrayList<>();
-        int icons[] = {R.drawable.ic_connection, R.drawable.ic_controller};
+        int icons[] = {
+                R.drawable.ic_connection,
+                R.drawable.ic_controller,
+                R.drawable.ic_console};
         String titles[] = {
                 getString(R.string.bluetooth_fragment),
-                getString(R.string.controller_fragment)
+                getString(R.string.controller_fragment),
+                getString(R.string.console_fragment)
         };
         for(int i=0; i<icons.length && i<titles.length; i++){
             NavigationRow row = new NavigationRow(icons[i], titles[i]);

@@ -82,11 +82,15 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onValueChanged(int angle, int power, int direction) {
                 String command = Commander.getInstance(getActivity()).getJoystickCommand(direction);
-                updateUI(command);
                 BluetoothService.write(command.getBytes());
                 if (!speedBlock) {
                     speedBar.setProgress(power / speedBar.getMax());
                 }
+                if(power == 0){
+                    command = Commander.getInstance(getActivity()).getStopCommand();
+                    BluetoothService.write(command.getBytes());
+                }
+                updateUI(command);
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
 

@@ -68,10 +68,8 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BluetoothDeviceAdapter(getActivity(), this);
         recyclerView.setAdapter(adapter);
+        adapter.setDevices(devices);
 
-        if(devices!=null){
-            adapter.setDevices(devices);
-        }
         setButtonsListeners();
         refreshButtons();
         return view;

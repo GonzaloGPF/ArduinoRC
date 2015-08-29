@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
                 switch (state){
                     case BluetoothAdapter.STATE_OFF:
                         Log.v(TAG, "onReceive: Shutting Down");
+                        bluetoothState = getString(R.string.not_connected);
+                        setToolbarTitle();
                         break;
                     case BluetoothAdapter.STATE_ON:
                         Log.d(TAG, "onReceive: Shutting On");
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     @Override
     protected void onResume() {
         super.onResume();
+        checkState();
         setToolbarTitle();
     }
 
@@ -222,6 +225,22 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         setToolbarTitle();
     }
 
+    private void checkState(){
+        if(BluetoothService.bluetoothService != null){
+            int state = BluetoothService.mState;
+            switch (state){
+                case BluetoothService.STATE_NONE:
+                    bluetoothState = getString(R.string.not_connected);
+                    break;
+                case BluetoothService.STATE_CONNECTING:
+                    bluetoothState = getString(R.string.connecting);
+                    break;
+                case BluetoothService.STATE_CONNECTED:
+                    bluetoothState = getString(R.string.connected);
+                    break;
+            }
+        }
+    }
     private void setToolbarTitle(){
         if(bluetoothState==null) {
             bluetoothState = getString(R.string.not_connected);
