@@ -49,10 +49,10 @@ public class SplashScreenActivity extends Activity {
         iv.clearAnimation();
         iv.startAnimation(anim);
 
-//        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
-//        anim.reset();
-//        iv = (ImageView) findViewById(R.id.xie_logo);
-//        iv.clearAnimation();
-//        iv.startAnimation(anim);
+        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
+        anim.reset();
+        iv = (ImageView) findViewById(R.id.img_title);
+        iv.clearAnimation();
+        iv.startAnimation(anim);
     }
 }
