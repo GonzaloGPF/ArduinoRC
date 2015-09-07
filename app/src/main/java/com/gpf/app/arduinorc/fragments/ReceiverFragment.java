@@ -75,13 +75,13 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     @Override
     public void onStart() {
         super.onStart();
-        readInputNames();
+        readInputs();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        saveInputNames();
+        saveInputs();
     }
 
     @Override
@@ -116,7 +116,18 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     public void setInputRowValues(String[] receivedValues){
         for(int i=0; i<inputRows.size() && i < receivedValues.length; i++){
             InputRow input = inputRows.get(i);
-            input.setValue(receivedValues[i]);
+            for (String received : receivedValues){
+
+                String[] receivedIDValue = received.split("-");
+                if(receivedIDValue.length == 2) {
+                    String receivedID = receivedIDValue[0];
+                    String receivedValue = receivedIDValue[1];
+                    if (receivedID.equals(input.getID())) {
+                        input.setValue(receivedValue);
+                    }
+                }
+
+            }
         }
         adapter.notifyDataSetChanged();
     }
@@ -124,24 +135,36 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     public AlertDialog addDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(R.string.add_input);
-        alertDialog.setMessage(R.string.enter_name);
+        alertDialog.setMessage(R.string.enter_input);
 
-        final EditText input = new EditText(getActivity());
+        final EditText inputID = new EditText(getActivity());
+        inputID.setHint("ID");
+        final EditText inputName = new EditText(getActivity());
+        inputName.setHint("Name");
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        inputID.setLayoutParams(lp);
+        inputName.setLayoutParams(lp);
+
+        LinearLayout ll = new LinearLayout(getActivity());
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(inputID);
+        ll.addView(inputName);
+
+        alertDialog.setView(ll);
         alertDialog.setIcon(R.drawable.ic_input);
 
         DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String inputText = input.getText().toString();
-                if(inputText.length()>0){
-                    inputText = inputText.replace("/", "-");
-                    InputRow inputRow = new InputRow(inputText, getString(R.string.no_value));
+                String inputIDText = inputID.getText().toString();
+                String inputNameText = inputName.getText().toString();
+                if(inputIDText.length()>0 && inputName.length()>0){
+                    InputRow inputRow = new InputRow(inputIDText, inputNameText, getString(R.string.no_value));
                     inputRows.add(inputRow);
                     adapter.setData(inputRows);
                 }
@@ -169,8 +192,8 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
             public void onClick(DialogInterface dialog, int which) {
                 inputRows = new ArrayList<>();
                 adapter.setData(inputRows);
-                inputRows.add(new InputRow("Input 1", getString(R.string.no_value)));
-                saveInputNames();
+                inputRows.add(new InputRow("1", "Input", getString(R.string.no_value)));
+                saveInputs();
             }
         };
         DialogInterface.OnClickListener listenerCancel = new DialogInterface.OnClickListener() {
@@ -184,30 +207,33 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
         return alertDialog.create();
     }
 
-    public void saveInputNames(){
-        String inputNames = "";
+    public void saveInputs(){
+        String inputs = "";
         for (InputRow inputRow : inputRows) {
-            inputNames += inputRow.getTitle() + "/";
+            inputs += inputRow.getID() + "-" + inputRow.getTitle() + "/";
         }
-        if(!inputNames.isEmpty()) {
+        if(!inputs.isEmpty()) {
             SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(INPUT_NAMES, inputNames);
+            editor.putString(INPUT_NAMES, inputs);
             editor.apply();
         }
     }
 
-    public void readInputNames(){
+    public void readInputs(){
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String defaultInputNames = "Input 1";
-        String inputNames = sharedPref.getString(INPUT_NAMES, defaultInputNames);
-        setInputRows(inputNames);
+        String defaultInput = "1-Input/";
+        String inputs = sharedPref.getString(INPUT_NAMES, defaultInput);
+        setInputRows(inputs);
     }
 
-    public void setInputRows(String inputNames){
+    public void setInputRows(String inputs){
         inputRows = new ArrayList<>();
-        for(String inputName : inputNames.split("/")){
-            InputRow inputRow = new InputRow(inputName, getString(R.string.no_value));
+        for(String input : inputs.split("/")){
+            String inputIDName[] = input.split("-");
+            String inputID = inputIDName[0];
+            String inputName = inputIDName[1];
+            InputRow inputRow = new InputRow(inputID, inputName, getString(R.string.no_value));
             inputRows.add(inputRow);
         }
         adapter.setData(inputRows);

@@ -47,8 +47,14 @@ public class InputRowAdapter extends RecyclerView.Adapter<InputRowAdapter.InputR
     @Override
     public void onBindViewHolder(InputRowHolder holder, int position) {
         InputRow current = data.get(position);
+        holder.setID(current.getID());
         holder.setTitle(current.getTitle());
         holder.setValue(current.getValue());
+    }
+
+    private void deleteItem(int position){
+        data.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -58,55 +64,78 @@ public class InputRowAdapter extends RecyclerView.Adapter<InputRowAdapter.InputR
 
     public class InputRowHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView icon;
-        TextView title, value;
+        ImageView remove;
+        TextView id, title, value;
 
         public InputRowHolder(View itemView) {
             super(itemView);
-            icon = (ImageView) itemView.findViewById(R.id.input_icon);
+            remove = (ImageView) itemView.findViewById(R.id.input_remove);
+            id = (TextView) itemView.findViewById(R.id.input_id);
             title = (TextView) itemView.findViewById(R.id.input_name);
             value = (TextView) itemView.findViewById(R.id.input_value);
-            itemView.setOnClickListener(this);
+            title.setOnClickListener(this);
+            remove.setOnClickListener(this);
+        }
+        public void setID(String id){
+            this.id.setText(id);
         }
 
-        public void setTitle(String text){
-            this.title.setText(text);
+        public void setTitle(String title){
+            this.title.setText(title);
         }
 
-        public void setValue(String text){
-            value.setText(text);
+        public void setValue(String value){
+            this.value.setText(value);
         }
 
         @Override
         public void onClick(View v) {
-            editDialog(getAdapterPosition()).show();
+            switch (v.getId()){
+                case R.id.input_remove:
+                    deleteItem(getAdapterPosition());
+                    break;
+                case R.id.input_name:
+                    editDialog(getAdapterPosition()).show();
+                    break;
+            }
         }
 
         public AlertDialog editDialog(final int position){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(inflater.getContext());
             alertDialog.setTitle(R.string.edit_input);
-            alertDialog.setMessage(R.string.enter_name);
+            alertDialog.setMessage(R.string.enter_input);
 
-            final EditText input = new EditText(inflater.getContext());
+            final EditText inputID = new EditText(inflater.getContext());
+            final EditText inputName = new EditText(inflater.getContext());
+
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            input.setText(data.get(position).getTitle());
-            alertDialog.setView(input);
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            inputID.setLayoutParams(lp);
+            inputName.setLayoutParams(lp);
+
+            inputID.setText(data.get(position).getID());
+            inputName.setText(data.get(position).getTitle());
+
+            LinearLayout ll = new LinearLayout(inflater.getContext());
+            ll.setOrientation(LinearLayout.VERTICAL);
+            ll.addView(inputID);
+            ll.addView(inputName);
+
+            alertDialog.setView(ll);
             alertDialog.setIcon(R.drawable.ic_edit);
 
             DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener(){
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String inputText = input.getText().toString();
-                    if(inputText.length()>0){
-                        if(inputText.contains("/")){
-                            inputText = inputText.replace("/", "-");
-                        }
+                    String inputIDText = inputID.getText().toString();
+                    String inputNameText = inputName.getText().toString();
+                    if(inputIDText.length()>0 && inputNameText.length()>0){
                         InputRow inputRow = data.get(position);
-                        inputRow.setTitle(inputText);
+                        inputRow.setID(inputIDText);
+                        inputRow.setTitle(inputNameText);
                         notifyDataSetChanged();
                     }
                 }

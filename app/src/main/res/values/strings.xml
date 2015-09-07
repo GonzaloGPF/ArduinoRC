@@ -46,9 +46,10 @@
     <string name="connection">Connection</string>
     <string name="connection_confirm">"Do you want connect with "</string>
     <string name="command_modification">Command Modification</string>
-    <string name="enter_value">Enter a Value</string>
+    <string name="enter_input">Enter a Input</string>
     <string name="edit_input">Edit Input</string>
     <string name="btn_edit">Edit</string>
+    <string name="enter_command">Enter a Command</string>
 
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
 

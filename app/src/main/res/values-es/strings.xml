@@ -40,9 +40,10 @@
     <string name="connection">Conexión</string>
     <string name="connection_confirm">"¿Conectarse con "</string>
     <string name="command_modification">Modificar Comando</string>
-    <string name="enter_value">Ingresa un Valor</string>
+    <string name="enter_input">Ingresa una Entrada</string>
     <string name="edit_input">Editar Entrada</string>
     <string name="btn_edit">Editar</string>
+    <string name="enter_command">EIngresa un Comando</string>
     <string name="close_drawer">Cerrar</string>
     <string name="open_drawer">Abrir</string>
 

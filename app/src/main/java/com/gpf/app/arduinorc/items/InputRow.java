@@ -8,15 +8,29 @@ import android.os.Parcelable;
  */
 public class InputRow implements Parcelable {
 
-    String title, value;
+    String id, title, value;
 
-    public InputRow(String title, String value) {
+    public InputRow(String id, String title, String value) {
+        this.id = id;
         this.title = title;
         this.value = value;
+        processStrings();
     }
     public InputRow(Parcel in){
+        id = in.readString();
         title = in.readString();
         value = in.readString();
+        processStrings();
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public void setID(String id) {
+        this.id = id;
+        this.id = id.replace("/", "_");
+        this.id = id.replace("-", "_");
     }
 
     public String getTitle() {
@@ -25,6 +39,8 @@ public class InputRow implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+        this.title = title.replace("/", "_");
+        this.title = title.replace("-", "_");
     }
 
     public String getValue() {
@@ -35,6 +51,13 @@ public class InputRow implements Parcelable {
         this.value = value;
     }
 
+    private void processStrings(){
+        this.id = id.replace("/", "_");
+        this.id = id.replace("-", "_");
+        this.title = title.replace("/", "_");
+        this.title = title.replace("-", "_");
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -42,6 +65,7 @@ public class InputRow implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getID());
         dest.writeString(getTitle());
         dest.writeString(getValue());
     }

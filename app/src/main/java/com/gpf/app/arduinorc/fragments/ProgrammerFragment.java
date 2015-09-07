@@ -123,7 +123,7 @@ public class ProgrammerFragment extends Fragment implements View.OnClickListener
         final TextView textView = (TextView) view;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(R.string.command_modification);
-        alertDialog.setMessage(R.string.enter_value);
+        alertDialog.setMessage(R.string.enter_command);
 
         final EditText input = new EditText(getActivity());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
