@@ -25,7 +25,7 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
     private static final String CURRENT_FRAGMENT_NAME = "current_fragment_name";
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String currentFragmentName;
+    private Integer currentFragmentNameID;
     private NavigationListener navigationListener;
 
     public static NavigationFragment newInstance() {
@@ -40,14 +40,17 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null){
-            currentFragmentName = savedInstanceState.getString(CURRENT_FRAGMENT_NAME);
+            currentFragmentNameID = savedInstanceState.getInt(CURRENT_FRAGMENT_NAME);
+        }
+        if(currentFragmentNameID==null){
+            currentFragmentNameID = R.string.bluetooth_fragment;
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(CURRENT_FRAGMENT_NAME, currentFragmentName);
+        outState.putInt(CURRENT_FRAGMENT_NAME, currentFragmentNameID);
     }
 
     @Override
@@ -69,19 +72,19 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
         switch (position){
             case 0:
                 nextFragment = BluetoothFragment.newInstance();
-                currentFragmentName = getString(R.string.bluetooth_fragment);
+                currentFragmentNameID = R.string.bluetooth_fragment;
                 break;
             case 1:
                 nextFragment = ControllerFragment.newInstance();
-                currentFragmentName = getString(R.string.controller_fragment);
+                currentFragmentNameID = R.string.controller_fragment;
                 break;
             case 2:
                 nextFragment = ConsoleFragment.newInstance();
-                currentFragmentName = getString(R.string.console_fragment);
+                currentFragmentNameID = R.string.console_fragment;
                 break;
         }
         if(nextFragment != null){
-            ft.replace(R.id.fragmentContainer, nextFragment, currentFragmentName).commit();
+            ft.replace(R.id.fragmentContainer, nextFragment).commit();
             mDrawerLayout.closeDrawers();
             navigationListener.onNavigationChanged();
             //((MainActivity)getActivity()).setToolBarTitle(fragmentName);
@@ -119,11 +122,11 @@ public class NavigationFragment extends Fragment implements NavigationAdapter.Cl
         });
     }
 
-    public String getCurrentFragmentName(){
-        if(currentFragmentName!=null) {
-            return currentFragmentName;
+    public Integer getCurrentFragmentNameID(){
+        if(currentFragmentNameID !=null) {
+            return currentFragmentNameID;
         }else{
-            return getString(R.string.bluetooth_fragment);
+            return R.string.bluetooth_fragment;
         }
     }
 

@@ -1,11 +1,13 @@
 <resources>
-    <string name="app_name">AndroidRC</string>
-
-    <string name="action_settings">Settings</string>
+    <string name="app_name" translatable="false">AndroidRC</string>
     <string name="shared_pref_key" translatable="false">com.gpf.app.arduinorc</string>
+    <string name="navigation_row_text" translatable="false">NavigationRow Text</string>
 
+    <string name="title_activity_info">Information</string>
+    <string name="action_settings">Settings</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
+
     <string name="controller_fragment">Controller</string>
     <string name="bluetooth_fragment">Bluetooth</string>
     <string name="game_pad_fragment">GamePad</string>
@@ -13,44 +15,44 @@
     <string name="programmer_fragment">Programmer</string>
     <string name="console_fragment">Console</string>
 
+    <string name="btn_search">Search</string>
+    <string name="btn_bluetooth">Bluetooth</string>
+    <string name="btn_bonded">Bonded</string>
+    <string name="btn_add">Add</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_edit">Edit</string>
+
     <string name="connect">Connect</string>
     <string name="cancel">Cancel</string>
     <string name="connecting">[Connecting]</string>
     <string name="connected">[Connected]</string>
     <string name="not_connected">[Not Connected]</string>
-    <string name="navigation_row_text" translatable="false">NavigationRow Text</string>
-    <string name="btn_search">Search</string>
-    <string name="btn_bluetooth">Bluetooth</string>
-    <string name="btn_bonded">Bonded</string>
-
-    <string-array name="tabs">
-        <item>GamePad</item>
-        <item>Receiver</item>
-        <item>Programmer</item>
-    </string-array>
     <string name="disconnect">Disconnect</string>
+    <string name="connection">Connection</string>
+    <string name="connection_confirm">"Do you want connect with "</string>
+
     <string name="add_input">Add Input</string>
     <string name="enter_name">Enter a Name</string>
     <string name="no_value">No Value</string>
-    <string name="btn_add">Add</string>
-    <string name="btn_cancel">Cancel</string>
     <string name="delete_all_inputs">Delete all Inputs</string>
     <string name="confirm">Are you sure?</string>
-    <string name="btn_delete">Delete</string>
     <string name="command">Command</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
     <string name="bluetooth_not_available">Bluetooth is not available</string>
     <string name="discovering">Discovering</string>
     <string name="discovering_error">Discovering Error</string>
-    <string name="connection">Connection</string>
-    <string name="connection_confirm">"Do you want connect with "</string>
     <string name="command_modification">Command Modification</string>
     <string name="enter_input">Enter a Input</string>
     <string name="edit_input">Edit Input</string>
-    <string name="btn_edit">Edit</string>
     <string name="enter_command">Enter a Command</string>
+    <string name="action_info">info</string>
 
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string-array name="tabs">
+        <item>GamePad</item>
+        <item>Receiver</item>
+        <item>Programmer</item>
+    </string-array>
 
 </resources>

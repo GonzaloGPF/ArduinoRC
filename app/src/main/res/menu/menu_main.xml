@@ -3,13 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
+        android:id="@+id/action_info"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_info"
+        android:title="@string/action_info"
+        app:showAsAction="ifRoom"/>
+<!--    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="2"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_disconnect"
-        android:orderInCategory="200"
+        android:orderInCategory="3"
         android:title="@string/disconnect"
         app:showAsAction="never"/>
 </menu>

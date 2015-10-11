@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     private static final String TAG = "MainActivity";
     private static final String BT_STATE = "bt_state";
 
+    public static final String EXTRA_INFO = "extra info";
+
     private Toolbar toolbar;
 
     private NavigationFragment navigationFragment;
@@ -136,9 +138,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_info){
+            Intent intent = new Intent(this, InfoActivity.class);
+            intent.putExtra(EXTRA_INFO, getInfoID());
+            startActivity(intent);
         }
         if (id == R.id.action_disconnect){
             if(BluetoothService.bluetoothService!=null) {
@@ -245,12 +248,26 @@ public class MainActivity extends AppCompatActivity implements BluetoothFragment
         if(bluetoothState==null) {
             bluetoothState = getString(R.string.not_connected);
         }
-        currentFragmentName = navigationFragment.getCurrentFragmentName();
+        currentFragmentName = getString(navigationFragment.getCurrentFragmentNameID());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 toolbar.setTitle(currentFragmentName + " " + bluetoothState);
             }
         });
+    }
+
+    private Integer getInfoID(){
+        Integer currentFragmentNameID = navigationFragment.getCurrentFragmentNameID();
+        switch (currentFragmentNameID){
+            case R.string.bluetooth_fragment:
+                return 0;
+            case R.string.controller_fragment:
+                return 1;
+            case R.string.console_fragment:
+                return 2;
+            default:
+                return 0;
+        }
     }
 }

@@ -30,7 +30,7 @@ import java.util.List;
 public class ReceiverFragment extends Fragment implements BluetoothService.BTListener, View.OnClickListener {
 
     private static final String TAG = "ReceiverFragment";
-    private static final String INPUT_NAMES = "input_names";
+    private static final String INPUTS = "inputs";
     private InputRowAdapter adapter;
     private List<InputRow> inputRows;
 
@@ -215,7 +215,7 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
         if(!inputs.isEmpty()) {
             SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(INPUT_NAMES, inputs);
+            editor.putString(INPUTS, inputs);
             editor.apply();
         }
     }
@@ -223,7 +223,7 @@ public class ReceiverFragment extends Fragment implements BluetoothService.BTLis
     public void readInputs(){
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String defaultInput = "1-Input/";
-        String inputs = sharedPref.getString(INPUT_NAMES, defaultInput);
+        String inputs = sharedPref.getString(INPUTS, defaultInput);
         setInputRows(inputs);
     }
 
