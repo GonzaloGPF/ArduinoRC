@@ -9,13 +9,13 @@
         android:src="@drawable/img_android_bg_vertical"
         android:scaleType="centerCrop"/>
 
-    <ImageView
+<!--    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/img_title"
         android:src="@drawable/img_title"
         android:scaleType="centerCrop"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
 
 </RelativeLayout>

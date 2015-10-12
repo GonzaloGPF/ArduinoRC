@@ -51,8 +51,8 @@ public class SplashScreenActivity extends Activity {
 
         anim = AnimationUtils.loadAnimation(this, R.anim.translate);
         anim.reset();
-        iv = (ImageView) findViewById(R.id.img_title);
+/*        iv = (ImageView) findViewById(R.id.img_title);
         iv.clearAnimation();
-        iv.startAnimation(anim);
+        iv.startAnimation(anim);*/
     }
 }

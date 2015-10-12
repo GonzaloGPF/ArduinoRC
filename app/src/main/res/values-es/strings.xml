@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Controlador BT Programable</string>
     <string name="title_activity_info">Información</string>
     <string name="action_settings">Opciones</string>
     <string name="open_drawer">Abrir</string>
@@ -44,6 +45,29 @@
     <string name="edit_input">Editar Entrada</string>
     <string name="enter_command">Ingresa un Comando</string>
     <string name="action_info">info</string>
+
+    <string name="info_bluetooth_title">Información del Bluetooth</string>
+    <string name="info_bluetooth_subtitle">En esta sección es en donde podrás controlar el Adaptador Bluetooth de tu dispositivo.</string>
+    <string name="info_bluetooth_btn_bluetooth">Este botón te permitirá activar/desactivar el Bluetooth.</string>
+    <string name="info_bluetooth_btn_search">Aquí es en donde serás capaz de realizar una exploración Bluetooth para detectar otros dispositivos bluetooth cercanos.</string>
+    <string name="info_bluetooth_connection">Tras explorar, solo haz click en alguno de los dispositivos descubiertos para intentar establecer una conexión.</string>
+    <string name="info_bluetooth_btn_bonded">El último botón es útil para mostrar los dispositivos enlazados. Te permite evitar futuras exploraciones (¡las exploraciones requieren mucha energía!)</string>
+    <string name="info_bluetooth_toolbar_tip">Podrás ver el estado de la conexión mirando la Toolbar.</string>
+    <string name="info_controller_title">Información del Controlador</string>
+    <string name="info_controller_subtitle_">Esta sección te da la capacidad de intercambiar información con tu dispositivo.</string>
+    <string name="info_controller_gamepad">1.- GamePad - Enviando comandos</string>
+    <string name="info_controller_display">Obtén información del comando que estás enviando con cada interacción.</string>
+    <string name="info_controller_toggle">Conmuta entre joystick y cruceta</string>
+    <string name="info_controller_receiver">2.- Receptor - Recibe datos de tu dispositivo</string>
+    <string name="info_controller_btn_add">Añade tantas entradas como quieras (datos que tu dispositivo remoto enviará) con un ID único.</string>
+    <string name="info_controller_btn_refresh">Este botón te permite enviar un comando de petición a tu dispositivo.</string>
+    <string name="info_controller_btn_delete">Borra todas las entradas usando este botón</string>
+    <string name="info_controller_protocol">El Protocolo - Tu dispositivo deberá construir cada entrada como se muestra:</string>
+    <string name="info_controller_programmer">3.- Programador - Edita cualquier control que quieras</string>
+    <string name="info_controller_commands">Puedes cambiar cualquier comando de cada control editando sus valores</string>
+    <string name="info_console_title">Información de la Consola</string>
+    <string name="info_console_subtitle">La consola te permite enviar bytes escribiendo cualquier cosa que quieras. Como en un chat.</string>
+    <string name="info_console_chat">Programa tu dispositivo para que responda a tus necesidades.</string>
 
     <string-array name="tabs">
         <item>Mando</item>

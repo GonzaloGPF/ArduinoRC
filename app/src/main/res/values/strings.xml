@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">AndroidRC</string>
+    <string name="app_name">Programmable BT Controller</string>
     <string name="shared_pref_key" translatable="false">com.gpf.app.arduinorc</string>
     <string name="navigation_row_text" translatable="false">NavigationRow Text</string>
 
@@ -48,6 +48,29 @@
     <string name="edit_input">Edit Input</string>
     <string name="enter_command">Enter a Command</string>
     <string name="action_info">info</string>
+
+    <string name="info_bluetooth_title">Bluetooth Information</string>
+    <string name="info_bluetooth_subtitle">This section is where you can control the Bluetooth Adapter of your device.</string>
+    <string name="info_bluetooth_btn_bluetooth">This button let you enable/disable the Bluetooth.</string>
+    <string name="info_bluetooth_btn_search">Here you will be able to make a bluetooth exploration to detect others bluetooth devices close to you.</string>
+    <string name="info_bluetooth_connection">After exploring, just click one of the discovered devices to attemp starting a connection</string>
+    <string name="info_bluetooth_btn_bonded">Last Button is useful to show all bonded devices. It lets you to avoid future explorations (explorations require a lot of energy!)</string>
+    <string name="info_bluetooth_toolbar_tip">You can see the connection\'s state by looking at the Toolbar.</string>
+    <string name="info_controller_title">Controller Information</string>
+    <string name="info_controller_subtitle_">This section will give you the capability to exchange information with your device.</string>
+    <string name="info_controller_gamepad">1.- GamePad - Sending commands!</string>
+    <string name="info_controller_display">Get information about what commands your are sending with every interaction.</string>
+    <string name="info_controller_toggle">Toggle between joystick and d-pad</string>
+    <string name="info_controller_receiver">2.- Receiver - Receive data from your device</string>
+    <string name="info_controller_btn_add">Add all inputs as you want (data that your remote device will send) with an unique ID.</string>
+    <string name="info_controller_btn_refresh">This button send a command petition to your remote device.</string>
+    <string name="info_controller_btn_delete">Delete all inputs using this button</string>
+    <string name="info_controller_protocol">The Protocol - Your device must build each input as follows:</string>
+    <string name="info_controller_programmer">3.- Programmer - Edit any control you want</string>
+    <string name="info_controller_commands">You can change every control command by editing its values</string>
+    <string name="info_console_title">Console Information</string>
+    <string name="info_console_subtitle">The console lets you send bytes by typing anything you want. It\'s like a chat.</string>
+    <string name="info_console_chat">Program your device to respond at your needs.</string>
 
     <string-array name="tabs">
         <item>GamePad</item>

@@ -183,7 +183,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
                 if(speedBlock){
                     speedImage.setBackgroundColor(getResources().getColor(R.color.primaryColorLight));
                 }else{
-                    speedImage.setBackgroundColor(Color.TRANSPARENT);
+                    speedImage.setBackgroundColor(Color.WHITE);
                 }
                 speedBlock = !speedBlock;
                 break;
