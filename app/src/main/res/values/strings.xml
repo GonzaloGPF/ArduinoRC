@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Programmable BT Controller</string>
+    <string name="app_name">Bluetooth Controller</string>
     <string name="shared_pref_key" translatable="false">com.gpf.app.arduinorc</string>
     <string name="navigation_row_text" translatable="false">NavigationRow Text</string>
 

@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +27,11 @@ public class SplashScreenActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_splash_screen);
+
+        AdBuddiz.setPublisherKey("5fd5713e-ac91-4d18-a163-3cf0ffdd1ed5");
+        //AdBuddiz.setTestModeActive();
+        AdBuddiz.cacheAds(this);
+        //AdBuddiz.showAd(this);
 
         TimerTask task = new TimerTask() {
             @Override

@@ -20,8 +20,10 @@ import android.widget.Toast;
 import com.gpf.app.arduinorc.MainActivity;
 import com.gpf.app.arduinorc.R;
 import com.gpf.app.arduinorc.adapters.BluetoothDeviceAdapter;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BluetoothFragment extends Fragment implements View.OnClickListener, BluetoothDeviceAdapter.ClickListener {
 
@@ -29,6 +31,7 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_DISCOVERABLE = 2;
     private static final String DEVICES = "bluetooth_devices";
+    private Random generator = new Random();
     private Button btn_bluetooth, btn_search, btn_bonded;
     private BluetoothDeviceAdapter adapter;
     private BluetoothAdapter bAdapter;
@@ -47,6 +50,9 @@ public class BluetoothFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(generator.nextInt(10) < 5) {
+            AdBuddiz.showAd(getActivity());
+        }
         if (savedInstanceState != null) {
             devices = savedInstanceState.getParcelableArrayList(DEVICES);
         }

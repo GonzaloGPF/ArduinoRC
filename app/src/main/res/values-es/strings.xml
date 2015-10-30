@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Controlador BT Programable</string>
+    <string name="app_name">Controlador Bluetooth</string>
     <string name="title_activity_info">Información</string>
     <string name="action_settings">Opciones</string>
     <string name="open_drawer">Abrir</string>

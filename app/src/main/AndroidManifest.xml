@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    /*Ads*/
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -47,6 +50,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gpf.app.arduinorc.MainActivity" />
         </activity>
+        <activity android:name="com.purplebrain.adbuddiz.sdk.AdBuddizActivity"
+                  android:theme="@android:style/Theme.Translucent" />
     </application>
 
 </manifest>
